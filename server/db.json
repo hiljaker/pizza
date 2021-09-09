@@ -1,0 +1,52 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "hilmo",
+      "password": "mantab",
+      "role": "user"
+    },
+    {
+      "id": 2,
+      "username": "admin",
+      "password": "adminudin",
+      "role": "admin"
+    },
+    {
+      "username": "hiljaker",
+      "password": "akujaki",
+      "role": "user",
+      "id": 3
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "nama": "Alpukat",
+      "harga": 10000,
+      "stok": 10,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-avocado-with-leaf-isolated-on-white-clipping-path-professional-food-photography-1058981363.jpg"
+    },
+    {
+      "id": 2,
+      "nama": "Mangga",
+      "harga": 5000,
+      "stok": 20,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-mango-isolated-on-white-background-610892249.jpg"
+    },
+    {
+      "id": 3,
+      "nama": "Anggur",
+      "harga": 12000,
+      "stok": 25,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-dark-blue-grape-with-leaves-isolated-on-white-background-with-clipping-path-full-depth-of-field-604667843.jpg"
+    },
+    {
+      "id": 4,
+      "nama": "Nanas",
+      "harga": 15000,
+      "stok": 5,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-whole-pineapple-and-pineapple-slice-pineapple-with-leaves-isolate-on-white-full-depth-of-field-1403484713.jpg"
+    }
+  ]
+}
