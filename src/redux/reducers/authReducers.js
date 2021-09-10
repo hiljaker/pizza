@@ -1,9 +1,8 @@
 const INITIAL_STATE = {
     id: 0,
-    nama: "",
-    harga: 0,
-    stok: 0,
-    gambar: "",
+    username: "",
+    password: "",
+    role: "",
     isLogin: false
 }
 

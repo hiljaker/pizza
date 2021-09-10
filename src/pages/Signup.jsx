@@ -1,13 +1,16 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import "./styles/Signup.css"
 
 class Signup extends Component {
     state = {
         lihatPass: "password",
         username: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        doneSignup: false
     }
 
     // Lihat Password
@@ -26,14 +29,14 @@ class Signup extends Component {
 
     // Klik Sign Up
     onSignup = () => {
-        const { email, username, password, confirmPassword } = this.state
+        const { username, password, confirmPassword } = this.state
         if (!username || !password || !confirmPassword) {
             Swal.fire({
                 icon: 'warning',
                 text: 'Isi semua!'
             })
             return
-        } else if (confirmPassword != password) {
+        } else if (confirmPassword !== password) {
             Swal.fire({
                 icon: 'error',
                 text: 'Password tidak sesuai.'
@@ -49,6 +52,7 @@ class Signup extends Component {
                 icon: 'success',
                 text: 'Berhasil sign up!'
             })
+            this.setState({ doneSignup: true })
         }).catch((err) => {
             Swal.fire({
                 icon: 'error',
@@ -58,43 +62,56 @@ class Signup extends Component {
     }
 
     render() {
+        if (this.state.doneSignup) {
+            return <Redirect to="/login" />
+        }
+
         return (
-            <div className="login-page container">
-                <div className="box1 d-xl-flex flex-xl-column m-xl-5 p-xl-5">
-                    <h1 className="text-center mb-xl-5">Sign Up</h1>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        className="form-control w-25 align-self-center mb-xl-3"
-                        onChange={this.inputHandler}
-                    />
-                    <input
-                        type={this.state.lihatPass}
-                        name="password"
-                        placeholder="Password"
-                        className="form-control w-25 align-self-center mb-xl-3"
-                        onChange={this.inputHandler}
-                    />
-                    <input
-                        type={this.state.lihatPass}
-                        name="confirmPassword"
-                        placeholder="Confirm password"
-                        className="form-control w-25 align-self-center mb-xl-3"
-                        onChange={this.inputHandler}
-                    />
-                    <div className="text-center mb-xl-3">
+            <div className="container">
+                <div className="box1 d-xl-flex flex-xl-column m-xl-5 p-xl-5 m-md-5 p-md-5 my-5 mx-2 p-2">
+                    <h1 className="text-center mb-xl-5 mt-xl-5 mb-md-5 mt-md-5 mb-5 mt-5">Sign Up</h1>
+                    <div className="text-center">
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            onChange={this.inputHandler}
+                        />
+                    </div>
+                    <div className="text-center">
+                        <input
+                            type={this.state.lihatPass}
+                            name="password"
+                            placeholder="Password"
+                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            onChange={this.inputHandler}
+                        />
+                    </div>
+                    <div className="text-center">
+                        <input
+                            type={this.state.lihatPass}
+                            name="confirmPassword"
+                            placeholder="Confirm password"
+                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            onChange={this.inputHandler}
+                        />
+                    </div>
+                    <div className="text-center mb-xl-3 mb-md-3 mb-3">
                         <input
                             type="checkbox"
                             onChange={this.onCheck}
                         /> Lihat Password
                     </div>
-                    <button
-                        onClick={this.onSignup}
-                        className="btn btn-primary w-25 align-self-center mb-xl-3"
-                    >
-                        Sign Up
-                    </button>
+                    <div className="text-center">
+                        <button
+                            onClick={this.onSignup}
+                            className="btn btn-primary lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                        >
+                            Sign Up
+                        </button>
+                    </div>
+                    <p className="text-center">Sudah punya akun? <Link to="/login">Login</Link> disini!</p>
                 </div>
             </div>
         )

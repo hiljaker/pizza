@@ -1,8 +1,11 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { LoginAction } from '../redux/actions';
 import "./styles/Login.css"
+
 
 
 class Login extends Component {
@@ -33,7 +36,15 @@ class Login extends Component {
         axios.get(`http://localhost:9000/users?username=${username}&password=${password}`)
             .then((res) => {
                 if (res.data.length) {
-                    alert(`data ada`)
+                    localStorage.setItem("id", res.data[0].id)
+                    this.props.LoginAction(res.data[0])
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Yay!',
+                        text: 'Berhasil login!',
+                        timer: 2000,
+                        timerProgressBar: true
+                    })
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -47,47 +58,58 @@ class Login extends Component {
     }
 
     render() {
+        if (this.props.isLogin) {
+            return <Redirect to="/" />
+        }
+
         return (
             <div className="login-page container">
-                <div className="box1 d-xl-flex flex-xl-column m-xl-5 p-xl-5">
-                    <h1 className="text-center mb-xl-5">Login</h1>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        className="form-control w-25 align-self-center mb-xl-3"
-                        onChange={this.inputHandler}
-                    />
-                    <input
-                        type={this.state.lihatPass}
-                        name="password"
-                        placeholder="Password"
-                        className="form-control w-25 align-self-center mb-xl-3"
-                        onChange={this.inputHandler}
-                    />
-                    <div className="text-center mb-xl-3">
+                <div className="box1 d-xl-flex flex-xl-column m-xl-5 p-xl-5 m-md-5 p-md-5 my-5 mx-2 p-2">
+                    <h1 className="text-center mb-xl-5 mt-xl-5 mb-md-5 mt-md-5 mb-5 mt-5">Login</h1>
+                    <div className="text-center">
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            onChange={this.inputHandler}
+                        />
+                    </div>
+                    <div className="text-center">
+                        <input
+                            type={this.state.lihatPass}
+                            name="password"
+                            placeholder="Password"
+                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            onChange={this.inputHandler}
+                        />
+                    </div>
+                    <div className="text-center mb-xl-3 mb-md-3 mb-3">
                         <input
                             type="checkbox"
                             onChange={this.onCheck}
                         /> Lihat Password
                     </div>
-                    <button
-                        onClick={this.onLogin}
-                        className="btn btn-primary w-25 align-self-center mb-xl-3"
-                    >
-                        Login
-                    </button>
-                    <p className="text-center">Belum punya akun? <Link to="/signup">Sign up</Link> disini!</p>
+                    <div className="text-center mb-xl-2 mb-md-2 mb-2">
+                        <button
+                            onClick={this.onLogin}
+                            className="btn btn-primary lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                        >
+                            Login
+                        </button>
+                    </div>
+                    <p className="text-center mb-xl-2 mb-md-2">Belum punya akun? <Link to="/signup">Sign up</Link> disini!</p>
+                    <p className="text-center"><Link to="/">Kembali ke Home</Link></p>
                 </div>
             </div>
         )
     }
 }
 
-// const MapStateToProps = (state) => {
-//     return {
-//         isLogin: state.auth
-//     }
-// }
+const MapStateToProps = (state) => {
+    return {
+        isLogin: state.auth.isLogin
+    }
+}
 
-export default Login;
+export default connect(MapStateToProps, { LoginAction })(Login);
