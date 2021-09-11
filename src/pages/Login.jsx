@@ -63,43 +63,43 @@ class Login extends Component {
         }
 
         return (
-            <div className="login-page container">
-                <div className="box1 d-xl-flex flex-xl-column m-xl-5 p-xl-5 m-md-5 p-md-5 my-5 mx-2 p-2">
-                    <h1 className="text-center mb-xl-5 mt-xl-5 mb-md-5 mt-md-5 mb-5 mt-5">Login</h1>
-                    <div className="text-center">
+            <div className="login-page">
+                <div className="login-box">
+                    <h1 className="login-judul">Login</h1>
+                    <div className="login-input">
                         <input
                             type="text"
                             name="username"
                             placeholder="Username"
-                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            className="login-input-style"
                             onChange={this.inputHandler}
                         />
                     </div>
-                    <div className="text-center">
+                    <div className="login-input">
                         <input
                             type={this.state.lihatPass}
                             name="password"
                             placeholder="Password"
-                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            className="login-input-style"
                             onChange={this.inputHandler}
                         />
                     </div>
-                    <div className="text-center mb-xl-3 mb-md-3 mb-3">
+                    <div className="login-input">
                         <input
                             type="checkbox"
                             onChange={this.onCheck}
                         /> Lihat Password
                     </div>
-                    <div className="text-center mb-xl-2 mb-md-2 mb-2">
+                    <div className="login-input">
                         <button
                             onClick={this.onLogin}
-                            className="btn btn-primary lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            className="login-button-style"
                         >
                             Login
                         </button>
                     </div>
-                    <p className="text-center mb-xl-2 mb-md-2">Belum punya akun? <Link to="/signup">Sign up</Link> disini!</p>
-                    <p className="text-center"><Link to="/">Kembali ke Home</Link></p>
+                    <p className="fix-p">Belum punya akun? <Link to="/signup">Sign up</Link> disini!</p>
+                    <p className=""><Link to="/">Kembali ke Home</Link></p>
                 </div>
             </div>
         )

@@ -13,22 +13,10 @@
       "role": "admin"
     },
     {
-      "username": "hiljaker",
-      "password": "akujaki",
+      "username": "hilmaouanne",
+      "password": "masaiya",
       "role": "user",
       "id": 3
-    },
-    {
-      "username": "cobain",
-      "password": "test1",
-      "role": "user",
-      "id": 4
-    },
-    {
-      "username": "pewpew",
-      "password": "keren",
-      "role": "user",
-      "id": 5
     }
   ],
   "products": [

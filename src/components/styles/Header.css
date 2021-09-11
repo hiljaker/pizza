@@ -2,3 +2,7 @@
     text-decoration: none;
     color:white;
 }
+
+.txt-link:hover {
+    color:white;
+}

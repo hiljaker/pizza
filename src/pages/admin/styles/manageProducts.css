@@ -1,0 +1,42 @@
+.mp-box {
+    margin-left: 25%;
+    margin-bottom: 10%;
+    padding: 4%;
+    width: 160vh;
+    height: 100vh;
+}
+
+.mp-button {
+    margin-bottom: 5%;
+    border: none;
+    padding: 1% 2%;
+    border-radius: 10px;
+    background-color: tomato;
+    color: white;
+    transition: 200ms;
+}
+
+.mp-button:hover {
+    background-color: rgb(255, 68, 35);
+}
+
+.pict-size {
+    max-width: 30%;
+}
+
+/* Tabel */
+.t-nomor {
+    width: 5%;
+}
+
+.t-nama {
+    width: 20%;
+}
+
+.t-stok {
+    width: 10%;
+}
+
+.t-harga {
+    width: 30%;
+}

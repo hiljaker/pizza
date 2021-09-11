@@ -43,22 +43,41 @@ class Signup extends Component {
             })
             return
         }
-        axios.post(`http://localhost:9000/users`, {
-            username: username,
-            password: password,
-            role: "user"
-        }).then((res) => {
-            Swal.fire({
-                icon: 'success',
-                text: 'Berhasil sign up!'
+        axios.get(`http://localhost:9000/users?username=${username}`)
+            .then((res) => {
+                if (res.data.length) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Username telah digunakan',
+                        timer: 2000,
+                        timerProgressBar: true
+                    })
+                } else {
+                    axios.post(`http://localhost:9000/users`, {
+                        username: username,
+                        password: password,
+                        role: "user"
+                    }).then((res) => {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Berhasil sign up!'
+                        })
+                        this.setState({ doneSignup: true })
+                    }).catch((err) => {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Server error'
+                        })
+                    })
+                }
+            }).catch((err) => {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Server error'
+                })
             })
-            this.setState({ doneSignup: true })
-        }).catch((err) => {
-            Swal.fire({
-                icon: 'error',
-                text: 'Server error'
-            })
-        })
+
     }
 
     render() {
@@ -67,51 +86,51 @@ class Signup extends Component {
         }
 
         return (
-            <div className="container">
-                <div className="box1 d-xl-flex flex-xl-column m-xl-5 p-xl-5 m-md-5 p-md-5 my-5 mx-2 p-2">
-                    <h1 className="text-center mb-xl-5 mt-xl-5 mb-md-5 mt-md-5 mb-5 mt-5">Sign Up</h1>
-                    <div className="text-center">
+            <div className="signup-page">
+                <div className="signup-box">
+                    <h1 className="signup-judul">Sign Up</h1>
+                    <div className="signup-input">
                         <input
                             type="text"
                             name="username"
                             placeholder="Username"
-                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            className="signup-input-style"
                             onChange={this.inputHandler}
                         />
                     </div>
-                    <div className="text-center">
+                    <div className="signup-input">
                         <input
                             type={this.state.lihatPass}
                             name="password"
                             placeholder="Password"
-                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            className="signup-input-style"
                             onChange={this.inputHandler}
                         />
                     </div>
-                    <div className="text-center">
+                    <div className="signup-input">
                         <input
                             type={this.state.lihatPass}
                             name="confirmPassword"
                             placeholder="Confirm password"
-                            className="lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            className="signup-input-style"
                             onChange={this.inputHandler}
                         />
                     </div>
-                    <div className="text-center mb-xl-3 mb-md-3 mb-3">
+                    <div className="signup-input">
                         <input
                             type="checkbox"
                             onChange={this.onCheck}
                         /> Lihat Password
                     </div>
-                    <div className="text-center">
+                    <div className="signup-input">
                         <button
                             onClick={this.onSignup}
-                            className="btn btn-primary lebar align-self-center mb-xl-3 mb-md-3 mb-3"
+                            className="signup-button-style"
                         >
                             Sign Up
                         </button>
                     </div>
-                    <p className="text-center">Sudah punya akun? <Link to="/login">Login</Link> disini!</p>
+                    <p className="">Sudah punya akun? <Link to="/login">Login</Link> disini!</p>
                 </div>
             </div>
         )

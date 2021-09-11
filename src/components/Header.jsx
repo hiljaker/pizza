@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     back: {
-        backgroundColor: "#44919C"
+        backgroundColor: "#FF7600"
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -32,6 +32,7 @@ const onLogout = () => {
 
 const BasicHeader = (props) => {
     const classes = useStyles()
+    let hiUsername = `Hi, ${props.auth.username}!`
 
     return (
         <div className={classes.root}>
@@ -47,8 +48,8 @@ const BasicHeader = (props) => {
                         </Typography>
                     )}
                     {props.auth.isLogin ? (
-                        <Typography>
-                            hii {props.auth.username}
+                        <Typography className="fw-bold">
+                            {hiUsername.toUpperCase()}
                         </Typography>
                     ) : null}
                     {props.auth.isLogin ? (
