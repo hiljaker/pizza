@@ -1,41 +1,50 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BasicHeader from '../components/Header';
+import { Card, CardImg, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import "./styles/Home.css"
+import { toRupiah } from '../helpers/toRupiah';
 
 class Home extends Component {
-    guestText = () => {
-        return (
-            <h1 className="text-center">Hi, Guest!</h1>
-        )
+    state = {
+        products: []
     }
 
-    userText = () => {
-        return (
-            <h1 className="text-center">Hi, User!</h1>
-        )
+    componentDidMount() {
+        axios.get(`http://localhost:9000/products`)
+            .then((res) => {
+                this.setState({ products: res.data })
+                console.log(this.state.products);
+            }).catch((err) => {
+                alert(`server error`)
+            })
     }
 
-    adminText = () => {
-        return (
-            <h1 className="text-center">Hi, Admin!</h1>
-        )
-    }
-
-    finalText = () => {
-        if (this.props.auth.role === `admin`) {
-            return this.adminText()
-        } else if (this.props.auth.role === `user`) {
-            return this.userText()
-        } else {
-            return this.guestText()
-        }
+    renderProducts = () => {
+        return this.state.products.map((val, index) => {
+            return (
+                <div key={index + 1} className="kartu-box-style">
+                    <Card className="kartu-style">
+                        <CardImg src={val.gambar} alt={val.nama} className="gambar-kartu" />
+                        <CardBody>
+                            <CardTitle tag="h5">{val.nama}</CardTitle>
+                            <CardSubtitle tag="h6" className="teks-harga mb-3">{toRupiah(val.harga)}/buah</CardSubtitle>
+                            <button className="cart-button-style">Tambahkan ke Keranjang</button>
+                        </CardBody>
+                    </Card>
+                </div>
+            )
+        })
     }
 
     render() {
         return (
             <div>
                 <BasicHeader />
-                {this.finalText()}
+                <div className="kartu-box">
+                    {this.renderProducts()}
+                </div>
             </div>
         )
     }

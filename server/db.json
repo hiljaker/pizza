@@ -21,32 +21,74 @@
   ],
   "products": [
     {
-      "id": 1,
-      "nama": "Alpukat",
-      "harga": 10000,
-      "stok": 10,
-      "gambar": "https://image.shutterstock.com/z/stock-photo-avocado-with-leaf-isolated-on-white-clipping-path-professional-food-photography-1058981363.jpg"
-    },
-    {
-      "id": 2,
-      "nama": "Mangga",
-      "harga": 5000,
-      "stok": 20,
-      "gambar": "https://image.shutterstock.com/z/stock-photo-mango-isolated-on-white-background-610892249.jpg"
-    },
-    {
-      "id": 3,
-      "nama": "Anggur",
-      "harga": 12000,
-      "stok": 25,
-      "gambar": "https://image.shutterstock.com/z/stock-photo-dark-blue-grape-with-leaves-isolated-on-white-background-with-clipping-path-full-depth-of-field-604667843.jpg"
-    },
-    {
       "id": 4,
       "nama": "Nanas",
       "harga": 15000,
       "stok": 5,
       "gambar": "https://image.shutterstock.com/z/stock-photo-whole-pineapple-and-pineapple-slice-pineapple-with-leaves-isolate-on-white-full-depth-of-field-1403484713.jpg"
+    },
+    {
+      "id": 5,
+      "nama": "Apel",
+      "harga": 5000,
+      "stok": 30,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-red-apple-isolated-on-white-background-clipping-path-full-depth-of-field-1727544364.jpg"
+    },
+    {
+      "id": 6,
+      "nama": "Jeruk",
+      "harga": 6000,
+      "stok": 20,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-orange-fruit-with-orange-slices-and-leaves-isolated-on-white-background-1386912362.jpg"
+    },
+    {
+      "id": 7,
+      "nama": "Semangka",
+      "harga": 30000,
+      "stok": 13,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-whole-and-half-watermelon-isolated-on-white-background-1422071948.jpg"
+    },
+    {
+      "id": 8,
+      "nama": "Pisang",
+      "harga": 5000,
+      "stok": 25,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-banana-cluster-isolated-575528746.jpg"
+    },
+    {
+      "nama": "Melon",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-whole-and-slice-of-japanese-melons-orange-melon-or-cantaloupe-melon-with-seeds-isolated-on-white-751347499.jpg",
+      "stok": 35,
+      "harga": 20000,
+      "id": 9
+    },
+    {
+      "nama": "Rambutan",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-rambutan-isolated-on-white-with-clipping-path-1175756485.jpg",
+      "stok": 50,
+      "harga": 1000,
+      "id": 10
+    },
+    {
+      "nama": "Pepaya",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-whole-and-half-of-ripe-papaya-fruit-with-seeds-isolated-on-white-background-737284537.jpg",
+      "stok": 15,
+      "harga": 20000,
+      "id": 11
+    },
+    {
+      "nama": "Pear",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-ripe-green-pears-isolated-with-leaves-isolated-on-white-310951742.jpg",
+      "stok": 40,
+      "harga": 2000,
+      "id": 12
+    },
+    {
+      "nama": "Srikaya",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-sugar-apple-or-custard-apple-with-slice-and-green-leaf-isolated-on-white-background-exotic-1013630656.jpg",
+      "stok": 20,
+      "harga": 5000,
+      "id": 13
     }
   ]
 }

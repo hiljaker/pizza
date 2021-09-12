@@ -1,0 +1,32 @@
+.kartu-box {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: space-between;
+ margin: 7vh 8vw;
+}
+
+.kartu-box-style {
+    margin-bottom: 7vh;
+}
+
+.kartu-style {
+    max-width: 20vw;
+}
+
+.gambar-kartu {
+    min-height: 50vh;
+}
+
+.teks-harga {
+    color: tomato;
+    font-weight: 700;
+}
+
+.cart-button-style {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 3% 0;
+    background-color: tomato;
+    color: white;
+}

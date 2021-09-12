@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import AdminHome from './pages/admin/adminHome';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 import Signup from './pages/Signup';
 import { LoginAction } from './redux/actions';
 
@@ -29,6 +30,7 @@ class App extends Component {
       <Route path="/" exact component={AdminHome} />
       <Route path="/login" exact component={Login} />
       <Route path="/signup" exact component={Signup} />
+      <Route path="*" component={NotFound} />
     </Switch>
   )
 
@@ -37,6 +39,7 @@ class App extends Component {
       <Route path="/" exact component={Home} />
       <Route path="/login" exact component={Login} />
       <Route path="/signup" exact component={Signup} />
+      <Route path="*" component={NotFound} />
     </Switch>
   )
 
