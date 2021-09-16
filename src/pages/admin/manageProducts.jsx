@@ -10,13 +10,23 @@ class ManageProducts extends Component {
     state = {
         products: [],
         modalOpen: false,
-        modalEdit: false,
+        addProducts: {
+            nama: "",
+            gambar: "",
+            stok: 0,
+            harga: 0
+        },
         modalHapus: false,
         indexHapus: -1,
-        nama: "",
-        gambar: "",
-        stok: 0,
-        harga: 0
+        modalEdit: false,
+        indexEdit: -1,
+        editProducts: {
+            nama: "",
+            gambar: "",
+            stok: 0,
+            harga: 0
+        },
+        inputCari: ""
     }
 
     // Get Data from Server
@@ -40,7 +50,7 @@ class ManageProducts extends Component {
                     <td><img src={val.gambar} alt={val.nama} className="pict-size" /></td>
                     <td>{val.stok}</td>
                     <td>{toRupiah(val.harga)} per buah</td>
-                    <td><button className="button-edit">Edit</button></td>
+                    <td><button className="button-edit" onClick={() => this.modalEditHandler(index)}>Edit</button></td>
                     <td><button className="button-hapus" onClick={() => this.modalHapusHandler(index)}>Hapus</button></td>
                 </tr>
             )
@@ -52,8 +62,8 @@ class ManageProducts extends Component {
         this.setState({ modalOpen: !this.state.modalOpen })
     }
 
-    modalEditHandler = () => {
-        this.setState({ modalEdit: !this.state.modalEdit })
+    modalEditHandler = (index) => {
+        this.setState({ indexEdit: index, modalEdit: !this.state.modalEdit })
     }
 
     modalHapusHandler = (index) => {
@@ -85,21 +95,20 @@ class ManageProducts extends Component {
 
     // Get Input
     inputHandler = (e) => {
-        this.setState({ [e.target.name]: e.target.value })
-        console.log(this.state);
-        console.log(this.state.products)
-
+        let addProductsCopy = this.state.addProducts
+        addProductsCopy = { ...addProductsCopy, [e.target.name]: e.target.value }
+        this.setState({ addProducts: addProductsCopy })
     }
 
     // Tambah
     onTambah = () => {
-        const { nama, gambar, stok, harga } = this.state
+        const { nama, gambar, stok, harga } = this.state.addProducts
         if (!nama || !gambar || !stok || !harga) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Isi semua!',
-                timer: 2000,
+                timer: 1500,
                 timerProgressBar: true
             })
             return
@@ -114,7 +123,7 @@ class ManageProducts extends Component {
                 icon: 'success',
                 title: 'Yay!',
                 text: 'Berhasil tambah produk',
-                timer: 2000,
+                timer: 1500,
                 timerProgressBar: true
             })
             this.setState({ modalOpen: false })
@@ -164,16 +173,103 @@ class ManageProducts extends Component {
             })
     }
 
+    // Modal Edit
+    modalEdit = () => {
+        return (
+            <Modal isOpen={this.state.modalEdit} toggle={this.modalEditHandler}>
+                <ModalHeader>
+                    Edit Produk
+                </ModalHeader>
+                <ModalBody>
+                    <input type="text" name="nama" placeholder="Nama" className="modal-input-style" onChange={this.editInputHandler} />
+                    <input type="text" name="gambar" placeholder="Link Gambar" className="modal-input-style" onChange={this.editInputHandler} />
+                    <input type="number" name="stok" placeholder="Stok" className="modal-input-style" onChange={this.editInputHandler} />
+                    <input type="number" name="harga" placeholder="Harga" className="modal-input-style" onChange={this.editInputHandler} />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={this.onSimpan}>
+                        Simpan
+                    </Button>
+                    <Button color="secondary" onClick={this.modalEditHandler}>
+                        Batal
+                    </Button>
+                </ModalFooter>
+            </Modal>
+        )
+    }
+
+    // Get Edit Input
+    editInputHandler = (e) => {
+        let editProductsCopy = this.state.editProducts
+        editProductsCopy = { ...editProductsCopy, [e.target.name]: e.target.value }
+        this.setState({ editProducts: editProductsCopy })
+        console.log(this.state.editProducts);
+    }
+
+    // Simpan Hasil Edit
+    onSimpan = () => {
+        let { nama, gambar, stok, harga } = this.state.editProducts
+        if (!nama || !gambar || !stok || !harga) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Isi semua!',
+                timer: 1500,
+                timerProgressBar: true
+            })
+            return
+        }
+
+        let { indexEdit, products, editProducts } = this.state
+        let idEdit = products[indexEdit].id
+
+        axios.put(`http://localhost:9000/products/${idEdit}`, editProducts)
+            .then((res) => {
+                axios.get(`http://localhost:9000/products`)
+                    .then((res1) => {
+                        let defEditProducts = {
+                            nama: "",
+                            gambar: "",
+                            stok: 0,
+                            harga: 0
+                        }
+                        this.setState({
+                            products: res1.data,
+                            editProducts: defEditProducts,
+                            modalEdit: !this.state.modalEdit
+                        })
+                    }).catch((err) => {
+                        alert(`server error`)
+                    })
+            }).catch((err) => {
+                alert(`server error`)
+            })
+
+    }
+
+    inputCariHandler = (e) => {
+        axios.get(`http://localhost:9000/products?nama_like=${e.target.value}`)
+            .then((res) => {
+                this.setState({ products: res.data })
+            }).catch((err) => {
+                alert(`server error`)
+            })
+    }
+
     render() {
         return (
             <div className="mp-box">
                 {this.modalAddItem()}
                 {this.modalHapus()}
+                {this.modalEdit()}
                 <button className="mp-button" onClick={this.modalHandler}>
                     Tambah Produk
                 </button>
+                <div className="input-cari-box">
+                    <input type="text" placeholder="Cari Produk" className="input-cari" onChange={this.inputCariHandler} />
+                </div>
                 <Table hover>
-                    <thead className="text-center">
+                    <thead className="text-center warna-tabel">
                         <tr>
                             <th className="t-nomor">#</th>
                             <th className="t-nama">Nama</th>

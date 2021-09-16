@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,13 +8,15 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { LogoutAction } from '../redux/actions';
 import "./styles/Header.css"
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { FaShoppingCart } from "react-icons/fa";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
     back: {
-        backgroundColor: "#FF7600"
+        backgroundColor: "#FF7600",
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
 }));
+
 
 const onLogout = () => {
     localStorage.removeItem("id")
@@ -33,6 +36,9 @@ const onLogout = () => {
 const BasicHeader = (props) => {
     const classes = useStyles()
     let hiUsername = `Hi, ${props.auth.username}!`
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const toggle = () => setDropdownOpen(prevState => !prevState);
 
     return (
         <div className={classes.root}>
@@ -48,12 +54,22 @@ const BasicHeader = (props) => {
                         </Typography>
                     )}
                     {props.auth.isLogin ? (
-                        <Typography className="fw-bold">
-                            {hiUsername.toUpperCase()}
-                        </Typography>
-                    ) : null}
-                    {props.auth.isLogin ? (
-                        <Button onClick={onLogout} color="inherit" className="ms-4">Logout</Button>
+                        <>
+                            <Link to="/cart">
+                                <FaShoppingCart fontSize={25} color="white" style={{ marginRight: "2vw" }} />
+                            </Link>
+                            <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                                <DropdownToggle className="bg-white text-dark border-white">
+                                    {hiUsername.toUpperCase()}
+                                </DropdownToggle>
+                                <DropdownMenu right onClick={onLogout}>
+                                    <DropdownItem>
+                                        Log Out
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </>
+                        // <Button onClick={onLogout} color="inherit" className="ms-4">Logout</Button>
                     ) : (
                         <Link to="/login" className="txt-link">
                             <Button color="inherit">Login</Button>

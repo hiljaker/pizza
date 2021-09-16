@@ -1,2 +1,2 @@
-# V0.03
-Render dimana-mana, fitur tambah dan hapus pada admin
+# V0.04
+Lagi buat input data keranjang yg akan ditampilan di halaman keranjang

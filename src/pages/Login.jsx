@@ -42,14 +42,16 @@ class Login extends Component {
                         icon: 'success',
                         title: 'Yay!',
                         text: 'Berhasil login!',
-                        timer: 2000,
+                        timer: 1500,
                         timerProgressBar: true
                     })
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Akun tidak ditemukan!'
+                        text: 'Akun tidak ditemukan!',
+                        timer: 1500,
+                        timerProgressBar: true
                     })
                 }
             }).catch((err) => {

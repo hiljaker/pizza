@@ -4,7 +4,8 @@
       "id": 1,
       "username": "hilmo",
       "password": "mantab",
-      "role": "user"
+      "role": "user",
+      "cart": []
     },
     {
       "id": 2,
@@ -13,10 +14,24 @@
       "role": "admin"
     },
     {
-      "username": "hilmaouanne",
-      "password": "masaiya",
+      "cart": [
+        {
+          "nama": "Apel",
+          "gambar": "https://image.shutterstock.com/z/stock-photo-red-apple-isolated-on-white-background-clipping-path-full-depth-of-field-1727544364.jpg",
+          "kuantitas": 4
+        }
+      ],
+      "username": "donhilmo",
+      "password": "Hilmo57",
       "role": "user",
       "id": 3
+    },
+    {
+      "username": "mamah",
+      "password": "Mamah12",
+      "role": "user",
+      "cart": [],
+      "id": 4
     }
   ],
   "products": [
@@ -84,11 +99,25 @@
       "id": 12
     },
     {
-      "nama": "Srikaya",
-      "gambar": "https://image.shutterstock.com/z/stock-photo-sugar-apple-or-custard-apple-with-slice-and-green-leaf-isolated-on-white-background-exotic-1013630656.jpg",
-      "stok": 20,
-      "harga": 5000,
+      "nama": "Kelapa",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-coconut-with-half-and-leaves-on-white-background-393850891.jpg",
+      "stok": "10",
+      "harga": "20000",
       "id": 13
+    },
+    {
+      "nama": "Lemon",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-lemon-fruit-with-leaf-isolate-lemon-whole-half-slice-leaves-on-white-lemon-slices-with-zest-1727353507.jpg",
+      "stok": "45",
+      "harga": "3000",
+      "id": 14
+    },
+    {
+      "nama": "Leci",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-lychee-with-leaves-isolated-on-white-background-tropical-fruit-1023780235.jpg",
+      "stok": 30,
+      "harga": 5000,
+      "id": 15
     }
   ]
 }

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import AdminHome from './pages/admin/adminHome';
+import Cart from './pages/Cart';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
@@ -39,6 +40,7 @@ class App extends Component {
       <Route path="/" exact component={Home} />
       <Route path="/login" exact component={Login} />
       <Route path="/signup" exact component={Signup} />
+      <Route path="/cart" exact component={Cart} />
       <Route path="*" component={NotFound} />
     </Switch>
   )

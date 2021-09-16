@@ -10,7 +10,24 @@ class Signup extends Component {
         username: "",
         password: "",
         confirmPassword: "",
-        doneSignup: false
+        doneSignup: false,
+        openAlert: true,
+        buttonDisabled: false
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.password !== this.state.password) {
+            this.setState({ password: this.state.password })
+            const cekPass = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})")
+            if (!cekPass.test(this.state.password)) {
+                this.setState({ openAlert: false, buttonDisabled: true })
+                return
+            } else {
+                this.setState({ openAlert: true, buttonDisabled: false })
+            }
+            console.log(this.state.password);
+        }
+
     }
 
     // Lihat Password
@@ -22,7 +39,7 @@ class Signup extends Component {
         }
     }
 
-    // Ambil Input
+    // Ambil Input Username
     inputHandler = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
@@ -33,13 +50,17 @@ class Signup extends Component {
         if (!username || !password || !confirmPassword) {
             Swal.fire({
                 icon: 'warning',
-                text: 'Isi semua!'
+                text: 'Isi semua!',
+                timer: 1500,
+                timerProgressBar: true
             })
             return
         } else if (confirmPassword !== password) {
             Swal.fire({
                 icon: 'error',
-                text: 'Password tidak sesuai.'
+                text: 'Password tidak sesuai.',
+                timer: 1500,
+                timerProgressBar: true
             })
             return
         }
@@ -50,18 +71,21 @@ class Signup extends Component {
                         icon: 'error',
                         title: 'Oops...',
                         text: 'Username telah digunakan',
-                        timer: 2000,
+                        timer: 1500,
                         timerProgressBar: true
                     })
                 } else {
                     axios.post(`http://localhost:9000/users`, {
                         username: username,
                         password: password,
-                        role: "user"
+                        role: "user",
+                        cart: []
                     }).then((res) => {
                         Swal.fire({
                             icon: 'success',
-                            text: 'Berhasil sign up!'
+                            text: 'Berhasil sign up!',
+                            timer: 1500,
+                            timerProgressBar: true
                         })
                         this.setState({ doneSignup: true })
                     }).catch((err) => {
@@ -104,9 +128,10 @@ class Signup extends Component {
                             name="password"
                             placeholder="Password"
                             className="signup-input-style"
-                            onChange={this.inputHandler}
+                            onKeyUp={this.inputHandler}
                         />
                     </div>
+                    <p className="pass-alert" hidden={this.state.openAlert}>Password harus berisi setidaknya 1 huruf kecil, 1 huruf besar, dan 1 angka</p>
                     <div className="signup-input">
                         <input
                             type={this.state.lihatPass}
@@ -126,6 +151,7 @@ class Signup extends Component {
                         <button
                             onClick={this.onSignup}
                             className="signup-button-style"
+                            disabled={this.state.buttonDisabled}
                         >
                             Sign Up
                         </button>

@@ -10,7 +10,7 @@
 .signup-box {
     border-radius: 20px;
     text-align: center;
-    height: 60%;
+    height: 70%;
     width: 30vw;
     margin: 0 0;
     background-color: white;
@@ -23,6 +23,13 @@
 
 .signup-input {
     margin-bottom: 3%;
+}
+
+.pass-alert {
+    margin: 0 6vw;
+    font-size: 1vw;
+    margin-bottom: 3%;
+    color: red;
 }
 
 .signup-input-style {
