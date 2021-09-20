@@ -77,11 +77,21 @@ class Home extends Component {
                         {
                             nama: helpers2.nama,
                             gambar: helpers2.gambar,
+                            harga: helpers2.harga,
                             kuantitas: parseInt(this.state.kuantitas)
                         }
                     ]
                 }).then((res2) => {
-
+                    console.log(keranjang)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Yay!',
+                        text: 'Pilihanmu berhasil ditambahkan',
+                        timer: 1500,
+                        timerProgressBar: true
+                    })
+                }).catch((err) => {
+                    alert(`error`)
                 })
             })
 

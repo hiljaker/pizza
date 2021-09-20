@@ -16,9 +16,22 @@
     {
       "cart": [
         {
-          "nama": "Apel",
-          "gambar": "https://image.shutterstock.com/z/stock-photo-red-apple-isolated-on-white-background-clipping-path-full-depth-of-field-1727544364.jpg",
-          "kuantitas": 4
+          "nama": "Delima",
+          "gambar": "https://image.shutterstock.com/z/stock-photo-fresh-ripe-pomegranate-with-green-leaves-isolated-on-white-background-high-resolution-image-1291478515.jpg",
+          "harga": 5000,
+          "kuantitas": 10
+        },
+        {
+          "nama": "Pisang",
+          "gambar": "https://image.shutterstock.com/z/stock-photo-banana-cluster-isolated-575528746.jpg",
+          "harga": 5000,
+          "kuantitas": 10
+        },
+        {
+          "nama": "Nangka",
+          "gambar": "https://image.shutterstock.com/z/stock-photo-jackfruit-isolated-on-white-background-1506623726.jpg",
+          "harga": 50000,
+          "kuantitas": 1
         }
       ],
       "username": "donhilmo",
@@ -85,39 +98,25 @@
       "id": 10
     },
     {
-      "nama": "Pepaya",
-      "gambar": "https://image.shutterstock.com/z/stock-photo-whole-and-half-of-ripe-papaya-fruit-with-seeds-isolated-on-white-background-737284537.jpg",
-      "stok": 15,
-      "harga": 20000,
-      "id": 11
-    },
-    {
-      "nama": "Pear",
-      "gambar": "https://image.shutterstock.com/z/stock-photo-ripe-green-pears-isolated-with-leaves-isolated-on-white-310951742.jpg",
-      "stok": 40,
-      "harga": 2000,
-      "id": 12
-    },
-    {
-      "nama": "Kelapa",
-      "gambar": "https://image.shutterstock.com/z/stock-photo-coconut-with-half-and-leaves-on-white-background-393850891.jpg",
-      "stok": "10",
-      "harga": "20000",
-      "id": 13
-    },
-    {
-      "nama": "Lemon",
-      "gambar": "https://image.shutterstock.com/z/stock-photo-lemon-fruit-with-leaf-isolate-lemon-whole-half-slice-leaves-on-white-lemon-slices-with-zest-1727353507.jpg",
-      "stok": "45",
-      "harga": "3000",
-      "id": 14
-    },
-    {
-      "nama": "Leci",
-      "gambar": "https://image.shutterstock.com/z/stock-photo-lychee-with-leaves-isolated-on-white-background-tropical-fruit-1023780235.jpg",
+      "nama": "Kiwi",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-ripe-whole-kiwi-fruit-and-half-kiwi-fruit-isolated-on-white-background-699645964.jpg",
       "stok": 30,
+      "harga": 3500,
+      "id": 16
+    },
+    {
+      "nama": "Delima",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-fresh-ripe-pomegranate-with-green-leaves-isolated-on-white-background-high-resolution-image-1291478515.jpg",
+      "stok": 15,
       "harga": 5000,
-      "id": 15
+      "id": 17
+    },
+    {
+      "nama": "Nangka",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-jackfruit-isolated-on-white-background-1506623726.jpg",
+      "stok": 5,
+      "harga": 50000,
+      "id": 18
     }
   ]
 }

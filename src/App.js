@@ -35,7 +35,7 @@ class App extends Component {
     </Switch>
   )
 
-  ruteUmum = () => (
+  ruteUser = () => (
     <Switch>
       <Route path="/" exact component={Home} />
       <Route path="/login" exact component={Login} />
@@ -45,10 +45,21 @@ class App extends Component {
     </Switch>
   )
 
+  ruteUmum = () => (
+    <Switch>
+      <Route path="/" exact component={Home} />
+      <Route path="/login" exact component={Login} />
+      <Route path="/signup" exact component={Signup} />
+      <Route path="*" component={NotFound} />
+    </Switch>
+  )
+
   renderRute = () => {
     let { role } = this.props.auth
     if (role === `admin`) {
       return this.ruteAdmin()
+    } else if (role === `user`) {
+      return this.ruteUser()
     } else {
       return this.ruteUmum()
     }

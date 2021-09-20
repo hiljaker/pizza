@@ -1,27 +1,37 @@
-import React from 'react';
-import { UncontrolledCarousel } from 'reactstrap';
+import React, { Component } from 'react';
+import { Carousel } from "react-bootstrap";
 import Kar1 from "../assets/kar1.png"
 import Kar2 from "../assets/kar2.png"
 import Kar3 from "../assets/kar3.png"
 
-const items = [
-    {
-        src: Kar1,
-        altText: 'Slide 1',
-        key: '1'
-    },
-    {
-        src: Kar2,
-        altText: 'Slide 2',
-        key: '2'
-    },
-    {
-        src: Kar3,
-        altText: 'Slide 3',
-        key: '3'
+class Karosel extends Component {
+    render() {
+        return (
+            <Carousel>
+                <Carousel.Item interval={1500}>
+                    <img
+                        className="d-block w-100"
+                        src={Kar1}
+                        alt="First slide"
+                    />
+                </Carousel.Item>
+                <Carousel.Item interval={1500}>
+                    <img
+                        className="d-block w-100"
+                        src={Kar2}
+                        alt="Second slide"
+                    />
+                </Carousel.Item>
+                <Carousel.Item interval={1500}>
+                    <img
+                        className="d-block w-100"
+                        src={Kar3}
+                        alt="Third slide"
+                    />
+                </Carousel.Item>
+            </Carousel>
+        )
     }
-];
-
-const Karosel = () => <UncontrolledCarousel items={items} autoPlay indicators controls />;
+}
 
 export default Karosel;

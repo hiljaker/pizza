@@ -1,0 +1,9 @@
+.nf-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.nf-style {
+    margin-top: 12%;
+    text-align: center;
+}

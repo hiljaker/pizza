@@ -1,2 +1,2 @@
-# V0.04
-Lagi buat input data keranjang yg akan ditampilan di halaman keranjang
+# V0.05
+bagusin sm nambah fitur apa ya tadi di halaman keranjang

@@ -1,0 +1,58 @@
+.page-keranjang {
+    display: flex;
+}
+
+.list-item {
+    flex-basis: 65%;
+    padding: 2% 2% 2% 15%;
+}
+
+.item-details {
+    background-color: rgb(233, 233, 192);
+    display: flex;
+    margin-bottom: 2%;
+    border-radius: 5px;
+}
+
+.detail-sec1 {
+    flex-basis: 30%;
+    padding: 2%;
+}
+
+.item-imgstyle {
+    width: 100%;
+    min-height: 30vh;
+    border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.336);
+}
+
+.detail-sec2 {
+    flex-basis: 70%;
+    padding: 2%;
+}
+
+.tombolhapus-cart {
+    border: none;
+    padding: 0 5%;
+    border-radius: 5px;
+    background-color:#f9773e;
+    color: white;
+    transition: 200ms;
+}
+
+.tombolhapus-cart:hover {
+    background-color: #d86635;
+}
+
+.total-harga-sec {
+    flex-basis: 35%;
+    padding: 2% 2% 2% 0;
+}
+
+.total-harga {
+    text-align: center;
+    background-color: rgb(233, 233, 192);
+    border-radius: 5px;
+    height: 50vh;
+    padding: 5%;
+}

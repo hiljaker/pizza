@@ -29,6 +29,11 @@
     padding: 3% 0;
     background-color: tomato;
     color: white;
+    transition: 200ms;
+}
+
+.cart-button-style:hover {
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
 }
 
 .popup-layout {

@@ -6,3 +6,27 @@
 .txt-link:hover {
     color:white;
 }
+
+.bar-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-sec2 {
+    display: flex;
+    align-items: center;
+}
+
+.judul-header {
+    font-family: 'Carter One';
+    font-size: 2.5vw;
+    color: white;
+    text-decoration: none;
+    transition: 200ms;
+    max-width: auto;
+}
+.judul-header:hover {
+    color: #f9773e;
+    -webkit-text-stroke: 1px white;
+}

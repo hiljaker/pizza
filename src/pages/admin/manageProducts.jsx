@@ -44,14 +44,14 @@ class ManageProducts extends Component {
     renderProducts = () => {
         return this.state.products.map((val, index) => {
             return (
-                <tr className="text-center">
+                <tr className="text-center" key={index + 1}>
                     <th scope="row">{index + 1}</th>
                     <td>{val.nama}</td>
                     <td><img src={val.gambar} alt={val.nama} className="pict-size" /></td>
                     <td>{val.stok}</td>
                     <td>{toRupiah(val.harga)} per buah</td>
                     <td><button className="button-edit" onClick={() => this.modalEditHandler(index)}>Edit</button></td>
-                    <td><button className="button-hapus" onClick={() => this.modalHapusHandler(index)}>Hapus</button></td>
+                    <td><button className="button-hapus" onClick={() => this.onHapus(index)}>Hapus</button></td>
                 </tr>
             )
         })
@@ -64,10 +64,6 @@ class ManageProducts extends Component {
 
     modalEditHandler = (index) => {
         this.setState({ indexEdit: index, modalEdit: !this.state.modalEdit })
-    }
-
-    modalHapusHandler = (index) => {
-        this.setState({ indexHapus: index, modalHapus: !this.state.modalHapus })
     }
 
     // Modal Tambah
@@ -119,6 +115,12 @@ class ManageProducts extends Component {
             stok: parseInt(stok),
             harga: parseInt(harga)
         }).then((res) => {
+            axios.get(`http://localhost:9000/products`)
+                .then((res2) => {
+                    this.setState({ products: res2.data })
+                }).catch((err2) => {
+                    alert(`server error`)
+                })
             Swal.fire({
                 icon: 'success',
                 title: 'Yay!',
@@ -130,47 +132,36 @@ class ManageProducts extends Component {
         }).catch((err) => {
             alert(`server error`)
         })
-        // window.location.reload(false);
-    }
-
-    // Modal Hapus
-    modalHapus = () => {
-        return (
-            <Modal isOpen={this.state.modalHapus} toggle={this.modalHapusHandler}>
-                <ModalHeader>
-                    Hapus Item
-                </ModalHeader>
-                <ModalBody>
-                    Kamu akan menghapus produk
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={this.onHapus} >Ya</Button>
-                    <Button color="secondary" onClick={this.modalHapusHandler}>Tidak</Button>
-                </ModalFooter>
-            </Modal>
-        )
     }
 
     // Hapus
-    onHapus = () => {
-        let { products, indexHapus } = this.state
-        let idHapus = products[indexHapus].id
-
-        axios.delete(`http://localhost:9000/products/${idHapus}`)
-            .then((res) => {
-                axios.get(`http://localhost:9000/products/`)
-                    .then((res1) => {
-                        this.setState({
-                            products: res1.data,
-                            indexHapus: -1,
-                            modalHapus: !this.state.modalHapus
-                        })
+    onHapus = (index) => {
+        let idProduk = this.state.products[index]
+        Swal.fire({
+            icon: "warning",
+            title: `Hapus ${idProduk.nama}?`,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Hapus',
+            denyButtonText: `Tidak`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:9000/products/${idProduk.id}`)
+                    .then((res) => {
+                        axios.get(`http://localhost:9000/products`)
+                            .then((res2) => {
+                                this.setState({ products: res2.data })
+                            }).catch((err2) => {
+                                alert(`server error`)
+                            })
                     }).catch((err) => {
                         alert(`server error`)
                     })
-            }).catch((err) => {
-                alert(`server error`)
-            })
+                Swal.fire('Terhapus!', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Batal dihapus', '', 'info')
+            }
+        })
     }
 
     // Modal Edit
@@ -260,7 +251,6 @@ class ManageProducts extends Component {
         return (
             <div className="mp-box">
                 {this.modalAddItem()}
-                {this.modalHapus()}
                 {this.modalEdit()}
                 <button className="mp-button" onClick={this.modalHandler}>
                     Tambah Produk
