@@ -69,8 +69,8 @@ const BasicHeader = (props) => {
                                 <DropdownToggle className="bg-white text-dark border-white">
                                     {hiUsername.toUpperCase()}
                                 </DropdownToggle>
-                                <DropdownMenu right onClick={onLogout}>
-                                    <DropdownItem>
+                                <DropdownMenu right>
+                                    <DropdownItem onClick={onLogout}>
                                         Log Out
                                     </DropdownItem>
                                 </DropdownMenu>

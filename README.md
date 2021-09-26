@@ -1,2 +1,2 @@
-# V0.05
-bagusin sm nambah fitur apa ya tadi di halaman keranjang
+# V0.06
+fix kalo add keranjang, stok berkurang; hapus keranjang, stok balik lg huh capppe

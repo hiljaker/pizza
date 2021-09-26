@@ -5,6 +5,9 @@ import { toRupiah } from '../../helpers/toRupiah';
 import "./styles/manageProducts.css"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Swal from 'sweetalert2';
+import { debounce } from 'throttle-debounce';
+import NoData from "../../assets/nodata.svg"
+import { apiURL } from '../../helpers/apiURL';
 
 class ManageProducts extends Component {
     state = {
@@ -14,24 +17,26 @@ class ManageProducts extends Component {
             nama: "",
             gambar: "",
             stok: 0,
-            harga: 0
+            harga: 0,
+            tipe: ""
         },
         modalHapus: false,
         indexHapus: -1,
         modalEdit: false,
         indexEdit: -1,
-        editProducts: {
-            nama: "",
-            gambar: "",
-            stok: 0,
-            harga: 0
-        },
+        // Edit
+        nama: "",
+        gambar: "",
+        stok: 0,
+        harga: 0,
+        tipe: "",
+        // Edit End
         inputCari: ""
     }
 
     // Get Data from Server
     componentDidMount = () => {
-        axios.get(`http://localhost:9000/products`)
+        axios.get(`${apiURL}/products`)
             .then((res) => {
                 console.log(res.data)
                 this.setState({ products: res.data })
@@ -49,7 +54,7 @@ class ManageProducts extends Component {
                     <td>{val.nama}</td>
                     <td><img src={val.gambar} alt={val.nama} className="pict-size" /></td>
                     <td>{val.stok}</td>
-                    <td>{toRupiah(val.harga)} per buah</td>
+                    <td>{toRupiah(val.harga)} per {val.tipe}</td>
                     <td><button className="button-edit" onClick={() => this.modalEditHandler(index)}>Edit</button></td>
                     <td><button className="button-hapus" onClick={() => this.onHapus(index)}>Hapus</button></td>
                 </tr>
@@ -77,6 +82,20 @@ class ManageProducts extends Component {
                         <input type="text" name="gambar" placeholder="Link Gambar" className="modal-input-style" onChange={this.inputHandler} />
                         <input type="number" name="stok" placeholder="Stok" className="modal-input-style" onChange={this.inputHandler} />
                         <input type="number" name="harga" placeholder="Harga" className="modal-input-style" onChange={this.inputHandler} />
+                        <div style={{ textAlign: "center", display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+                            <div>
+                                <input type="radio" id="perbuah" name="tipe" value="buah" style={{ marginRight: 5 }} onChange={this.inputHandler} />
+                                <label htmlFor="perbuah">per buah</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="perkilo" name="tipe" value="kg" style={{ marginRight: 5 }} onChange={this.inputHandler} />
+                                <label htmlFor="perbuah">per kilo</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="pertangkai" name="tipe" value="tangkai" style={{ marginRight: 5 }} onChange={this.inputHandler} />
+                                <label htmlFor="perbuah">per tangkai</label>
+                            </div>
+                        </div>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={this.onTambah} >Tambah</Button>
@@ -98,8 +117,8 @@ class ManageProducts extends Component {
 
     // Tambah
     onTambah = () => {
-        const { nama, gambar, stok, harga } = this.state.addProducts
-        if (!nama || !gambar || !stok || !harga) {
+        const { nama, gambar, stok, harga, tipe } = this.state.addProducts
+        if (!nama || !gambar || !stok || !harga || !tipe) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -109,13 +128,14 @@ class ManageProducts extends Component {
             })
             return
         }
-        axios.post(`http://localhost:9000/products`, {
+        axios.post(`${apiURL}/products`, {
             nama: nama,
             gambar: gambar,
             stok: parseInt(stok),
-            harga: parseInt(harga)
+            harga: parseInt(harga),
+            tipe: tipe
         }).then((res) => {
-            axios.get(`http://localhost:9000/products`)
+            axios.get(`${apiURL}/products`)
                 .then((res2) => {
                     this.setState({ products: res2.data })
                 }).catch((err2) => {
@@ -146,9 +166,9 @@ class ManageProducts extends Component {
             denyButtonText: `Tidak`,
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:9000/products/${idProduk.id}`)
+                axios.delete(`${apiURL}/products/${idProduk.id}`)
                     .then((res) => {
-                        axios.get(`http://localhost:9000/products`)
+                        axios.get(`${apiURL}/products`)
                             .then((res2) => {
                                 this.setState({ products: res2.data })
                             }).catch((err2) => {
@@ -176,6 +196,20 @@ class ManageProducts extends Component {
                     <input type="text" name="gambar" placeholder="Link Gambar" className="modal-input-style" onChange={this.editInputHandler} />
                     <input type="number" name="stok" placeholder="Stok" className="modal-input-style" onChange={this.editInputHandler} />
                     <input type="number" name="harga" placeholder="Harga" className="modal-input-style" onChange={this.editInputHandler} />
+                    <div style={{ textAlign: "center", display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+                        <div>
+                            <input type="radio" id="perbuah" name="tipe" value="buah" style={{ marginRight: 5 }} onChange={this.editInputHandler} />
+                            <label htmlFor="perbuah">per buah</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="perkilo" name="tipe" value="kg" style={{ marginRight: 5 }} onChange={this.editInputHandler} />
+                            <label htmlFor="perbuah">per kilo</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="pertangkai" name="tipe" value="tangkai" style={{ marginRight: 5 }} onChange={this.editInputHandler} />
+                            <label htmlFor="perbuah">per tangkai</label>
+                        </div>
+                    </div>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={this.onSimpan}>
@@ -191,16 +225,14 @@ class ManageProducts extends Component {
 
     // Get Edit Input
     editInputHandler = (e) => {
-        let editProductsCopy = this.state.editProducts
-        editProductsCopy = { ...editProductsCopy, [e.target.name]: e.target.value }
-        this.setState({ editProducts: editProductsCopy })
-        console.log(this.state.editProducts);
+        this.setState({ [e.target.name]: e.target.value })
+        console.log(this.state)
     }
 
     // Simpan Hasil Edit
     onSimpan = () => {
-        let { nama, gambar, stok, harga } = this.state.editProducts
-        if (!nama || !gambar || !stok || !harga) {
+        const { nama, gambar, stok, harga, tipe } = this.state
+        if (!nama || !gambar || !stok || !harga || !tipe) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -211,23 +243,34 @@ class ManageProducts extends Component {
             return
         }
 
-        let { indexEdit, products, editProducts } = this.state
+        let { indexEdit, products } = this.state
         let idEdit = products[indexEdit].id
 
-        axios.put(`http://localhost:9000/products/${idEdit}`, editProducts)
+        axios.put(`${apiURL}/products/${idEdit}`, {
+            nama: nama,
+            gambar: gambar,
+            stok: parseInt(stok),
+            harga: parseInt(harga),
+            tipe: tipe
+        })
             .then((res) => {
-                axios.get(`http://localhost:9000/products`)
+                axios.get(`${apiURL}/products`)
                     .then((res1) => {
-                        let defEditProducts = {
+                        this.setState({
+                            products: res1.data,
                             nama: "",
                             gambar: "",
                             stok: 0,
-                            harga: 0
-                        }
-                        this.setState({
-                            products: res1.data,
-                            editProducts: defEditProducts,
+                            harga: 0,
+                            tipe: "",
                             modalEdit: !this.state.modalEdit
+                        })
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Yay!',
+                            text: 'Berhasil edit produk',
+                            timer: 1500,
+                            timerProgressBar: true
                         })
                     }).catch((err) => {
                         alert(`server error`)
@@ -239,7 +282,7 @@ class ManageProducts extends Component {
     }
 
     inputCariHandler = (e) => {
-        axios.get(`http://localhost:9000/products?nama_like=${e.target.value}`)
+        axios.get(`${apiURL}/products?nama_like=${e.target.value}`)
             .then((res) => {
                 this.setState({ products: res.data })
             }).catch((err) => {
@@ -256,23 +299,31 @@ class ManageProducts extends Component {
                     Tambah Produk
                 </button>
                 <div className="input-cari-box">
-                    <input type="text" placeholder="Cari Produk" className="input-cari" onChange={this.inputCariHandler} />
+                    <input type="text" placeholder="Cari Produk" className="input-cari" onChange={debounce(500, this.inputCariHandler)} />
                 </div>
-                <Table hover>
-                    <thead className="text-center warna-tabel">
-                        <tr>
-                            <th className="t-nomor">#</th>
-                            <th className="t-nama">Nama</th>
-                            <th className="t-gambar">Gambar</th>
-                            <th className="t-stok">Stok</th>
-                            <th className="t-harga">Harga</th>
-                            <th className="t-aksi" colSpan={2}>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderProducts()}
-                    </tbody>
-                </Table>
+                {this.state.products.length === 0 ? (
+                    <div style={{ textAlign: "center", margin: "10% 0" }}>
+                        <img src={NoData} alt="" style={{ width: "15vw", marginBottom: 30 }} />
+                        <h3>Produk yang kamu cari tidak ada :(</h3>
+                    </div>
+                ) : (
+                    <Table hover>
+                        <thead className="text-center warna-tabel">
+                            <tr>
+                                <th className="t-nomor">#</th>
+                                <th className="t-nama">Nama</th>
+                                <th className="t-gambar">Gambar</th>
+                                <th className="t-stok">Stok</th>
+                                <th className="t-harga">Harga</th>
+                                <th className="t-aksi" colSpan={2}>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderProducts()}
+                        </tbody>
+                    </Table>
+                )}
+
             </div>
         )
     }

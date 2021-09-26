@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { apiURL } from '../helpers/apiURL';
 import "./styles/Signup.css"
 
 class Signup extends Component {
@@ -64,7 +65,7 @@ class Signup extends Component {
             })
             return
         }
-        axios.get(`http://localhost:9000/users?username=${username}`)
+        axios.get(`${apiURL}/users?username=${username}`)
             .then((res) => {
                 if (res.data.length) {
                     Swal.fire({
@@ -75,7 +76,7 @@ class Signup extends Component {
                         timerProgressBar: true
                     })
                 } else {
-                    axios.post(`http://localhost:9000/users`, {
+                    axios.post(`${apiURL}/users`, {
                         username: username,
                         password: password,
                         role: "user",

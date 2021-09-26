@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { apiURL } from '../helpers/apiURL';
 import { LoginAction } from '../redux/actions';
 import "./styles/Login.css"
-
-
 
 class Login extends Component {
     state = {
@@ -33,7 +32,7 @@ class Login extends Component {
     // Login
     onLogin = () => {
         const { username, password } = this.state
-        axios.get(`http://localhost:9000/users?username=${username}&password=${password}`)
+        axios.get(`${apiURL}/users?username=${username}&password=${password}`)
             .then((res) => {
                 if (res.data.length) {
                     localStorage.setItem("id", res.data[0].id)

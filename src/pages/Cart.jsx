@@ -7,22 +7,33 @@ import { toRupiah } from '../helpers/toRupiah';
 import BasicHeader from "./../components/Header";
 import "./styles/Cart.css"
 import EmptyCart from "../assets/empty-cart.svg"
+import { apiURL } from '../helpers/apiURL';
 
 class Cart extends Component {
     state = {
-        keranjang: []
+        keranjang: [],
+        products: []
     }
 
+    // Get Data Keranjang
     componentDidMount() {
-        axios.get(`http://localhost:9000/users/${this.props.auth.id}`)
+        axios.get(`${apiURL}/users/${this.props.auth.id}`)
             .then((res) => {
                 this.setState({ keranjang: res.data.cart })
                 console.log(this.state.keranjang);
+                axios.get(`${apiURL}/products`)
+                    .then((res2) => {
+                        this.setState({ products: res2.data })
+                        console.log(this.state.products);
+                    }).catch((err2) => {
+                        alert(`error`)
+                    })
             }).catch((err) => {
                 alert(`error`)
             })
     }
 
+    // Hapus Item
     onHapus(index) {
         let idProduk = this.state.keranjang[index]
         Swal.fire({
@@ -37,17 +48,25 @@ class Cart extends Component {
                 let keranjangCopy = this.state.keranjang
                 keranjangCopy.splice(index, 1)
                 console.log(keranjangCopy);
-                axios.patch(`http://localhost:9000/users/${this.props.auth.id}`, {
+                axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
                     cart: [
                         ...keranjangCopy
                     ]
                 }).then((res) => {
-                    axios.get(`http://localhost:9000/users/${this.props.auth.id}`)
+                    axios.get(`${apiURL}/users/${this.props.auth.id}`)
                         .then((res2) => {
                             this.setState({ keranjang: res2.data.cart })
                         }).catch((err2) => {
                             alert(`server error`)
                         })
+                    // Batas
+                    let productsCopy = this.state.products
+                    let indexProduk = productsCopy.findIndex(x => x.nama === idProduk.nama)
+                    productsCopy[indexProduk].stok += idProduk.kuantitas
+                    this.setState({ products: productsCopy })
+                    axios.patch(`${apiURL}/products/${productsCopy[indexProduk].id}`, {
+                        ...this.state.products[indexProduk]
+                    })
                 }).catch((err) => {
                     alert(`server error`)
                 })
@@ -58,6 +77,7 @@ class Cart extends Component {
         })
     }
 
+    // Render Keranjang
     renderKeranjang = () => {
         return this.state.keranjang.map((val, index) => {
             return (
@@ -71,8 +91,8 @@ class Cart extends Component {
                             <button onClick={() => this.onHapus(index)} className="tombolhapus-cart">Hapus</button>
                         </div>
                         <hr />
-                        <p>Harga per buah = {toRupiah(val.harga)}</p>
-                        <p>Kuantitas = {val.kuantitas}</p>
+                        <p>Harga per {val.tipe} = {toRupiah(val.harga)}</p>
+                        <p>Kuantitas = {val.kuantitas} {val.tipe}</p>
                         <p style={{ fontWeight: "bold" }}>Total = {toRupiah(val.harga * val.kuantitas)}</p>
                     </div>
                 </div>
@@ -80,6 +100,7 @@ class Cart extends Component {
         })
     }
 
+    // Total Belanja
     grandTotal() {
         let total = 0
         this.state.keranjang.forEach((val) => {

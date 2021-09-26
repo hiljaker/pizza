@@ -7,6 +7,9 @@ import "./styles/Home.css"
 import { toRupiah } from '../helpers/toRupiah';
 import Karosel from '../components/Carousel';
 import Swal from 'sweetalert2';
+import { debounce } from 'throttle-debounce';
+import NoData from "../assets/nodata.svg"
+import { apiURL } from '../helpers/apiURL';
 
 class Home extends Component {
     state = {
@@ -19,7 +22,7 @@ class Home extends Component {
 
     // Get Data dari Server
     componentDidMount() {
-        axios.get(`http://localhost:9000/products`)
+        axios.get(`${apiURL}/products`)
             .then((res) => {
                 this.setState({ products: res.data })
                 console.log(this.state.products);
@@ -58,37 +61,44 @@ class Home extends Component {
         const helpers2 = products[indexProduk]
 
         if (this.state.kuantitas === 0) {
-            alert(`isi input`)
+            Swal.fire('Isi kuantitas!')
             return
         } else if (this.state.kuantitas > helpers2.stok) {
-            alert(`Kelebihan `)
+            Swal.fire(`Kuantitas melebihi stok`)
             return
         } else if (this.state.kuantitas < 1) {
-            alert(`kekurangan`)
+            Swal.fire(`Tidak valid`)
             return
         }
 
-        axios.get(`http://localhost:9000/users/${this.props.auth.id}`)
+        axios.get(`${apiURL}/users/${this.props.auth.id}`)
             .then((res) => {
-                let keranjang = res.data.cart
-                axios.patch(`http://localhost:9000/users/${this.props.auth.id}`, {
+                this.setState({ keranjang: res.data.cart })
+                axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
                     cart: [
-                        ...keranjang,
+                        ...this.state.keranjang,
                         {
                             nama: helpers2.nama,
                             gambar: helpers2.gambar,
                             harga: helpers2.harga,
-                            kuantitas: parseInt(this.state.kuantitas)
+                            kuantitas: parseInt(this.state.kuantitas),
+                            tipe: helpers2.tipe
                         }
                     ]
                 }).then((res2) => {
-                    console.log(keranjang)
+                    console.log(this.state.keranjang)
                     Swal.fire({
                         icon: 'success',
                         title: 'Yay!',
                         text: 'Pilihanmu berhasil ditambahkan',
                         timer: 1500,
                         timerProgressBar: true
+                    })
+                    let stokCopy = this.state.products
+                    stokCopy[indexProduk].stok -= this.state.kuantitas
+                    this.setState({ products: stokCopy })
+                    axios.patch(`${apiURL}/products/${helpers2.id}`, {
+                        ...this.state.products[indexProduk]
                     })
                 }).catch((err) => {
                     alert(`error`)
@@ -120,7 +130,7 @@ class Home extends Component {
                         <h4 style={{ fontWeight: "700" }} > {helpers1 ? "" : helpers2.nama}</h4>
                         <hr />
                         <p className="fw-bold" style={{ marginBottom: "0", color: "tomato" }}>{toRupiah(helpers1 ? "" : helpers2.harga)}</p>
-                        <p style={{ marginBottom: "2vh" }}>Stok : {helpers1 ? "" : helpers2.stok}</p>
+                        <p style={{ marginBottom: "2vh" }}>Stok : {helpers1 ? "" : helpers2.stok} {helpers1 ? "" : helpers2.tipe} </p>
                         <div className="kuantitas-box">
                             <input className="kuantitas-input" name="kuantitas" type="number" placeholder="Kuantitas" onChange={this.inputKuantitasHandler} />
                         </div>
@@ -140,7 +150,7 @@ class Home extends Component {
                         <CardImg src={val.gambar} alt={val.nama} className="gambar-kartu" />
                         <CardBody>
                             <CardTitle tag="h5">{val.nama}</CardTitle>
-                            <CardSubtitle tag="h6" className="teks-harga mb-3">{toRupiah(val.harga)}/buah</CardSubtitle>
+                            <CardSubtitle tag="h6" className="teks-harga mb-3">{toRupiah(val.harga)}/{val.tipe}</CardSubtitle>
                             <button className="cart-button-style" onClick={() => this.modalPopupProdukHandler(index)} >+ Tambahkan ke Keranjang</button>
                         </CardBody>
                     </Card>
@@ -149,15 +159,40 @@ class Home extends Component {
         })
     }
 
+    inputHandler = (e) => {
+        axios.get(`${apiURL}/products?nama_like=${e.target.value}`)
+            .then((res) => {
+                this.setState({ products: res.data })
+            }).catch((err) => {
+                alert(`server error`)
+            })
+    }
+
     render() {
         return (
             <div>
                 <BasicHeader />
                 <Karosel />
-                {this.modalPopupProduk()}
-                <div className="kartu-box">
-                    {this.renderProducts()}
+                <div className="box-input">
+                    <input
+                        type="text"
+                        className="header-input"
+                        placeholder="Apa yang kamu cari?"
+                        onChange={debounce(500, this.inputHandler)}
+                    />
                 </div>
+                {this.modalPopupProduk()}
+                {this.state.products.length === 0 ? (
+                    <div style={{ textAlign: "center", margin: "5% 0" }}>
+                        <img src={NoData} alt="" style={{ width: "20vw", marginBottom: 30 }} />
+                        <h3>Produk yang kamu cari tidak ada :(</h3>
+                    </div>
+                ) : (
+                    <div className="kartu-box">
+                        {this.renderProducts()}
+                    </div>
+
+                )}
             </div>
         )
     }

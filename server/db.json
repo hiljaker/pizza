@@ -14,26 +14,7 @@
       "role": "admin"
     },
     {
-      "cart": [
-        {
-          "nama": "Delima",
-          "gambar": "https://image.shutterstock.com/z/stock-photo-fresh-ripe-pomegranate-with-green-leaves-isolated-on-white-background-high-resolution-image-1291478515.jpg",
-          "harga": 5000,
-          "kuantitas": 10
-        },
-        {
-          "nama": "Pisang",
-          "gambar": "https://image.shutterstock.com/z/stock-photo-banana-cluster-isolated-575528746.jpg",
-          "harga": 5000,
-          "kuantitas": 10
-        },
-        {
-          "nama": "Nangka",
-          "gambar": "https://image.shutterstock.com/z/stock-photo-jackfruit-isolated-on-white-background-1506623726.jpg",
-          "harga": 50000,
-          "kuantitas": 1
-        }
-      ],
+      "cart": [],
       "username": "donhilmo",
       "password": "Hilmo57",
       "role": "user",
@@ -45,6 +26,20 @@
       "role": "user",
       "cart": [],
       "id": 4
+    },
+    {
+      "username": "robi",
+      "password": "Robirobi11",
+      "role": "user",
+      "cart": [],
+      "id": 5
+    },
+    {
+      "username": "Vallencia",
+      "password": "Vallen19",
+      "role": "user",
+      "cart": [],
+      "id": 7
     }
   ],
   "products": [
@@ -52,62 +47,55 @@
       "id": 4,
       "nama": "Nanas",
       "harga": 15000,
-      "stok": 5,
-      "gambar": "https://image.shutterstock.com/z/stock-photo-whole-pineapple-and-pineapple-slice-pineapple-with-leaves-isolate-on-white-full-depth-of-field-1403484713.jpg"
-    },
-    {
-      "id": 5,
-      "nama": "Apel",
-      "harga": 5000,
-      "stok": 30,
-      "gambar": "https://image.shutterstock.com/z/stock-photo-red-apple-isolated-on-white-background-clipping-path-full-depth-of-field-1727544364.jpg"
-    },
-    {
-      "id": 6,
-      "nama": "Jeruk",
-      "harga": 6000,
-      "stok": 20,
-      "gambar": "https://image.shutterstock.com/z/stock-photo-orange-fruit-with-orange-slices-and-leaves-isolated-on-white-background-1386912362.jpg"
+      "stok": 12,
+      "gambar": "https://image.shutterstock.com/z/stock-photo-whole-pineapple-and-pineapple-slice-pineapple-with-leaves-isolate-on-white-full-depth-of-field-1403484713.jpg",
+      "tipe": "buah"
     },
     {
       "id": 7,
       "nama": "Semangka",
       "harga": 30000,
-      "stok": 13,
+      "stok": 20,
+      "tipe": "buah",
       "gambar": "https://image.shutterstock.com/z/stock-photo-whole-and-half-watermelon-isolated-on-white-background-1422071948.jpg"
     },
     {
       "id": 8,
       "nama": "Pisang",
       "harga": 5000,
-      "stok": 25,
+      "stok": 16,
+      "tipe": "tangkai",
       "gambar": "https://image.shutterstock.com/z/stock-photo-banana-cluster-isolated-575528746.jpg"
     },
     {
       "nama": "Melon",
       "gambar": "https://image.shutterstock.com/z/stock-photo-whole-and-slice-of-japanese-melons-orange-melon-or-cantaloupe-melon-with-seeds-isolated-on-white-751347499.jpg",
-      "stok": 35,
+      "stok": 8,
+      "tipe": "buah",
       "harga": 20000,
       "id": 9
     },
     {
       "nama": "Rambutan",
       "gambar": "https://image.shutterstock.com/z/stock-photo-rambutan-isolated-on-white-with-clipping-path-1175756485.jpg",
-      "stok": 50,
+      "stok": 18,
       "harga": 1000,
+      "tipe": "kg",
       "id": 10
     },
     {
-      "nama": "Kiwi",
-      "gambar": "https://image.shutterstock.com/z/stock-photo-ripe-whole-kiwi-fruit-and-half-kiwi-fruit-isolated-on-white-background-699645964.jpg",
-      "stok": 30,
-      "harga": 3500,
+      "nama": "Labu",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-pumpkin-isolated-on-white-background-158026607.jpg",
+      "stok": 18,
+      "tipe": "buah",
+      "harga": "50000",
       "id": 16
     },
     {
       "nama": "Delima",
       "gambar": "https://image.shutterstock.com/z/stock-photo-fresh-ripe-pomegranate-with-green-leaves-isolated-on-white-background-high-resolution-image-1291478515.jpg",
-      "stok": 15,
+      "stok": 13,
+      "tipe": "kg",
       "harga": 5000,
       "id": 17
     },
@@ -115,8 +103,41 @@
       "nama": "Nangka",
       "gambar": "https://image.shutterstock.com/z/stock-photo-jackfruit-isolated-on-white-background-1506623726.jpg",
       "stok": 5,
+      "tipe": "buah",
       "harga": 50000,
       "id": 18
+    },
+    {
+      "nama": "Stroberi",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-strawberry-isolated-strawberries-isolate-whole-half-cut-strawberry-on-white-strawberries-1750959335.jpg",
+      "stok": 100,
+      "tipe": "kg",
+      "harga": 2000,
+      "id": 19
+    },
+    {
+      "nama": "Anggur",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-dark-blue-grape-with-leaves-isolated-on-white-background-with-clipping-path-full-depth-of-field-604667843.jpg",
+      "stok": 20,
+      "tipe": "kg",
+      "harga": 15000,
+      "id": 20
+    },
+    {
+      "nama": "Manggis",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-isolated-mangosteens-two-whole-fruits-and-one-half-isolated-on-white-background-with-clipping-path-612976814.jpg",
+      "stok": 68,
+      "harga": 20000,
+      "tipe": "kg",
+      "id": 23
+    },
+    {
+      "nama": "Buah Naga",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-sliced-red-dragonfruit-pitahaya-path-isolated-on-white-1499329121.jpg",
+      "stok": 30,
+      "harga": 40000,
+      "tipe": "kg",
+      "id": 24
     }
   ]
 }

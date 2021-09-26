@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
+import { apiURL } from './helpers/apiURL';
 import AdminHome from './pages/admin/adminHome';
 import Cart from './pages/Cart';
 import Home from './pages/Home';
@@ -16,7 +17,7 @@ class App extends Component {
   componentDidMount() {
     let id = localStorage.getItem("id")
     if (id) {
-      axios.get(`http://localhost:9000/users/${id}`)
+      axios.get(`${apiURL}/users/${id}`)
         .then((res) => {
           this.props.LoginAction(res.data)
         }).catch((err) => {

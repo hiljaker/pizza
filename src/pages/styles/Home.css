@@ -1,3 +1,20 @@
+.box-input {
+    text-align: center;
+    margin-top: 7vh;
+}
+
+.header-input {
+    border: none;
+    padding: 0.5% 1%;
+    width: 35vw;
+    border-radius: 5px;
+    background-color: rgb(235, 235, 235);
+}
+
+.header-input:focus {
+    outline: none;
+}
+
 .kartu-box {
  display: flex;
  flex-wrap: wrap;
