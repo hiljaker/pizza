@@ -124,7 +124,7 @@ class Cart extends Component {
                         ) : this.renderKeranjang()}
                     </div>
                     <div className="total-harga-sec">
-                        <div className="total-harga">
+                        <div className="">
                             <h1>Total</h1>
                             <hr />
                             {this.grandTotal()}
@@ -132,7 +132,6 @@ class Cart extends Component {
                     </div>
                 </div>
             </div>
-
         )
     }
 }

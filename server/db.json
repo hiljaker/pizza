@@ -138,6 +138,22 @@
       "harga": 40000,
       "tipe": "kg",
       "id": 24
+    },
+    {
+      "nama": "Belimbing",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-ripe-carambolas-with-green-leaves-on-white-background-1922110310.jpg",
+      "stok": 30,
+      "harga": 15000,
+      "tipe": "kg",
+      "id": 25
+    },
+    {
+      "nama": "Salak",
+      "gambar": "https://image.shutterstock.com/z/stock-photo-salak-snake-fruit-path-isolated-on-white-1522907909.jpg",
+      "stok": 10,
+      "harga": 20000,
+      "tipe": "kg",
+      "id": 26
     }
   ]
 }

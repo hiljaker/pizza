@@ -1,2 +1,2 @@
-# V0.06
-fix kalo add keranjang, stok berkurang; hapus keranjang, stok balik lg huh capppe
+# V0.07
+wow sekarang jika menambahkan item yang sudah ada di keranjang, hanya kuantitasnya yg bertambah, tidak membuat list baru!!!!!!!!!!

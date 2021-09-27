@@ -74,35 +74,66 @@ class Home extends Component {
         axios.get(`${apiURL}/users/${this.props.auth.id}`)
             .then((res) => {
                 this.setState({ keranjang: res.data.cart })
-                axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
-                    cart: [
-                        ...this.state.keranjang,
-                        {
-                            nama: helpers2.nama,
-                            gambar: helpers2.gambar,
-                            harga: helpers2.harga,
-                            kuantitas: parseInt(this.state.kuantitas),
-                            tipe: helpers2.tipe
-                        }
-                    ]
-                }).then((res2) => {
-                    console.log(this.state.keranjang)
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Yay!',
-                        text: 'Pilihanmu berhasil ditambahkan',
-                        timer: 1500,
-                        timerProgressBar: true
+                let keranjangCopy = this.state.keranjang
+                let indexKeranjang = keranjangCopy.findIndex(x => x.nama === helpers2.nama)
+                console.log(indexKeranjang);
+                if (indexKeranjang < 0) {
+
+                    axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
+                        cart: [
+                            ...this.state.keranjang,
+                            {
+                                nama: helpers2.nama,
+                                gambar: helpers2.gambar,
+                                harga: helpers2.harga,
+                                kuantitas: parseInt(this.state.kuantitas),
+                                tipe: helpers2.tipe
+                            }
+                        ]
+                    }).then((res2) => {
+                        console.log(this.state.keranjang)
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Yay!',
+                            text: 'Pilihanmu berhasil ditambahkan',
+                            timer: 1500,
+                            timerProgressBar: true
+                        })
+                        let stokCopy = this.state.products
+                        stokCopy[indexProduk].stok -= this.state.kuantitas
+                        this.setState({ products: stokCopy })
+                        axios.patch(`${apiURL}/products/${helpers2.id}`, {
+                            ...this.state.products[indexProduk]
+                        })
+                    }).catch((err) => {
+                        alert(`error`)
                     })
-                    let stokCopy = this.state.products
-                    stokCopy[indexProduk].stok -= this.state.kuantitas
-                    this.setState({ products: stokCopy })
-                    axios.patch(`${apiURL}/products/${helpers2.id}`, {
-                        ...this.state.products[indexProduk]
+                } else {
+                    keranjangCopy[indexKeranjang].kuantitas += parseInt(this.state.kuantitas)
+                    console.log(keranjangCopy);
+                    axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
+                        cart: [
+                            ...keranjangCopy,
+                        ]
+                    }).then((res2) => {
+                        console.log(this.state.keranjang)
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Yay!',
+                            text: 'Pilihanmu berhasil ditambahkan',
+                            timer: 1500,
+                            timerProgressBar: true
+                        })
+                        let stokCopy = this.state.products
+                        stokCopy[indexProduk].stok -= this.state.kuantitas
+                        this.setState({ products: stokCopy })
+                        axios.patch(`${apiURL}/products/${helpers2.id}`, {
+                            ...this.state.products[indexProduk]
+                        })
+                    }).catch((err) => {
+                        alert(`error`)
                     })
-                }).catch((err) => {
-                    alert(`error`)
-                })
+                }
             })
 
         if (index >= 0) {
@@ -110,8 +141,6 @@ class Home extends Component {
         } else {
             this.setState({ indexProduk: -1, modalPopupProdukOpen: !this.state.modalPopupProdukOpen })
         }
-
-
     }
 
     // Pop Up Produk
@@ -159,6 +188,7 @@ class Home extends Component {
         })
     }
 
+    // Handler Input Cari
     inputHandler = (e) => {
         axios.get(`${apiURL}/products?nama_like=${e.target.value}`)
             .then((res) => {
