@@ -5,6 +5,8 @@ import { Switch, Route } from 'react-router-dom';
 import { apiURL } from './helpers/apiURL';
 import AdminHome from './pages/admin/adminHome';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import History from './pages/History';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
@@ -42,6 +44,8 @@ class App extends Component {
       <Route path="/login" exact component={Login} />
       <Route path="/signup" exact component={Signup} />
       <Route path="/cart" exact component={Cart} />
+      <Route path="/cart/:checkout" component={Checkout} />
+      <Route path="/history" exact component={History} />
       <Route path="*" component={NotFound} />
     </Switch>
   )

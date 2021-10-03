@@ -8,11 +8,14 @@ import { connect } from 'react-redux';
 import { LogoutAction } from '../redux/actions';
 import "./styles/Header.css"
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaHistory } from "react-icons/fa";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        position: "fixed",
+        zIndex: 4,
+        width: "100%"
     },
     back: {
         backgroundColor: "#FF7600",
@@ -62,6 +65,9 @@ const BasicHeader = (props) => {
                     )}
                     {props.auth.isLogin ? (
                         <div className="top-sec2">
+                            <Link to="/history">
+                                <FaHistory fontSize={25} color="white" style={{ marginRight: "2vw" }} />
+                            </Link>
                             <Link to="/cart">
                                 <FaShoppingCart fontSize={25} color="white" style={{ marginRight: "2vw" }} />
                             </Link>

@@ -1,5 +1,6 @@
 .page-keranjang {
     display: flex;
+    padding-top: 10vh;
 }
 
 .list-item {
@@ -50,9 +51,24 @@
 }
 
 .total-harga {
-    text-align: center;
+    /* text-align: center; */
     background-color: rgb(233, 233, 192);
-    border-radius: 5px;
-    height: 50vh;
+    height: 30vh;
     padding: 5%;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+}
+
+.checkout-button {
+    border: none;
+    width: 100%;
+    padding: 3%;
+    background-color: #f9773e;
+    color: white;
+    border-radius: 0 0 5px 5px;
+    transition: 200ms;
+}
+
+.checkout-button:hover {
+    background-color: #e06835;
 }

@@ -80,7 +80,8 @@ class Signup extends Component {
                         username: username,
                         password: password,
                         role: "user",
-                        cart: []
+                        cart: [],
+                        trhistory: []
                     }).then((res) => {
                         Swal.fire({
                             icon: 'success',
