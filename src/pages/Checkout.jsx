@@ -23,6 +23,7 @@ class Checkout extends Component {
         bought: []
     }
 
+    // Get Data Keranjang
     componentDidMount() {
         axios.get(`${apiURL}/users/${this.props.auth.id}`)
             .then((res) => {
@@ -32,6 +33,7 @@ class Checkout extends Component {
             })
     }
 
+    // Item details
     renderCheckout = () => {
         return this.state.keranjang.map((val, index) => {
             return (
@@ -45,6 +47,7 @@ class Checkout extends Component {
         })
     }
 
+    // Get Inputs
     inputHandler = (e) => {
         let biodataCopy = this.state.biodata
         biodataCopy = { ...biodataCopy, [e.target.name]: e.target.value }
@@ -52,6 +55,7 @@ class Checkout extends Component {
         console.log(this.state.biodata);
     }
 
+    // Total Belanja
     grandTotal = () => {
         let total = 0
         this.state.keranjang.forEach((val) => {
@@ -60,9 +64,9 @@ class Checkout extends Component {
         return <h5 style={{ color: "white", margin: "5% 0", textAlign: "center" }}>{toRupiah(total)}</h5>
     }
 
+    // When you click konfirmasi & bayar
     onPay = () => {
-        var d = new Date()
-        var n = d.getTime()
+        var d = new Date().getTime()
         const { nama, alamat, kodepos, payment } = this.state.biodata
 
         if (this.state.keranjang.length === 0) {
@@ -90,7 +94,6 @@ class Checkout extends Component {
         axios.get(`${apiURL}/users/${this.props.auth.id}`)
             .then((res) => {
                 this.setState({ trhistory: res.data.trhistory })
-                console.log(this.state.trhistory);
                 axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
                     trhistory: [
                         ...this.state.trhistory,
@@ -99,13 +102,13 @@ class Checkout extends Component {
                             alamat: alamat,
                             kodepos: parseInt(kodepos),
                             payment: payment,
-                            trid: `BW-${n}`,
+                            trid: `BW-${d}`,
                             bought: [
                                 ...this.state.keranjang
                             ]
                         }
                     ]
-                }).then((res2) => {
+                }).then(() => {
                     Swal.fire({
                         icon: 'success',
                         title: 'Yay!',
@@ -116,8 +119,15 @@ class Checkout extends Component {
                     axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
                         cart: []
                     })
-                }).catch((err2) => {
-                    alert(`error`)
+                }).then(() => {
+                    axios.get(`${apiURL}/users/${this.props.auth.id}`)
+                        .then((res2) => {
+                            this.setState({ keranjang: res2.data.cart })
+                        }).catch(() => {
+                            alert(`error`)
+                        })
+                }).catch(() => {
+                    alert(`alert`)
                 })
             })
     }
@@ -188,14 +198,7 @@ class Checkout extends Component {
                                 </div>
                             </div>
                             {this.grandTotal()}
-                            {this.state.keranjang.length === 0 && (!this.state.biodata.nama || !this.state.biodata.alamat || !this.state.biodata.kodepos || !this.state.biodata.payment) ?
-                                (
-                                    <button className="cnp-button" onClick={this.onPay}>Konfirmasi & Bayar</button>
-                                ) : (
-                                    <Link to="/">
-                                        <button className="cnp-button" onClick={this.onPay}>Konfirmasi & Bayar</button>
-                                    </Link>
-                                )}
+                            <button className="cnp-button" onClick={this.onPay}>Konfirmasi & Bayar</button>
                         </div>
                     </div>
                 </div>

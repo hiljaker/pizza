@@ -1,0 +1,37 @@
+.history-layout {
+    padding-top: 10vh;
+}
+
+.history-page {
+    width: 80%;
+    margin: 0 auto;
+    padding: 2vh 5vw;
+}
+
+.button-hapushistory {
+    background-color: rgb(226, 49, 49);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10% 15%;
+}
+
+.button-hapushistory:hover {
+    background-color: rgba(226, 49, 49, 0.541);
+}
+
+.history-items {
+    display: flex;
+    margin-bottom: 2%;
+}
+
+.history-items > img {
+    border: 2px solid gray;
+    width: 20%;
+    flex-basis: 30%;
+}
+
+.history-items > div {
+    padding: 2%;
+    flex-basis: 70%;
+}
