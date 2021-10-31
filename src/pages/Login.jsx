@@ -30,32 +30,25 @@ class Login extends Component {
     }
 
     // Login
-    onLogin = () => {
+    onLogin = async () => {
         const { username, password } = this.state
-        axios.get(`${apiURL}/users?username=${username}&password=${password}`)
-            .then((res) => {
-                if (res.data.length) {
-                    localStorage.setItem("id", res.data[0].id)
-                    this.props.LoginAction(res.data[0])
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Yay!',
-                        text: 'Berhasil login!',
-                        timer: 1500,
-                        timerProgressBar: true
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Akun tidak ditemukan!',
-                        timer: 1500,
-                        timerProgressBar: true
-                    })
-                }
-            }).catch((err) => {
-                alert(`server error`)
-            })
+        const res = await axios.post(`${apiURL}/login`, { username, password })
+        console.log(res.headers);
+        try {
+            if (!res.data.length) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Akun tidak ditemukan!',
+                    timer: 1500,
+                    timerProgressBar: true
+                })
+            }
+            localStorage.setItem("token", res.headers["access-token"])
+            this.props.LoginAction(res.data[0])
+        } catch (error) {
+            alert("error")
+        }
     }
 
     render() {

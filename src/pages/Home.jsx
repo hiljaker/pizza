@@ -21,14 +21,13 @@ class Home extends Component {
     }
 
     // Get Data dari Server
-    componentDidMount() {
-        axios.get(`${apiURL}/products`)
-            .then((res) => {
-                this.setState({ products: res.data })
-                console.log(this.state.products);
-            }).catch((err) => {
-                alert(`server error`)
-            })
+    async componentDidMount() {
+        let res = await axios.get(`${apiURL}/products`)
+        try {
+            this.setState({ products: res.data })
+        } catch (error) {
+            alert(`server error`)
+        }
     }
 
     // Trigger Pop Up Produk
@@ -56,14 +55,14 @@ class Home extends Component {
     }
 
     // Tambah ke Keranjang
-    onTambah = (index) => {
+    onTambah = async (index) => {
         const { products, indexProduk } = this.state
         const helpers2 = products[indexProduk]
 
         if (this.state.kuantitas === 0) {
             Swal.fire('Isi kuantitas!')
             return
-        } else if (this.state.kuantitas > helpers2.stok) {
+        } else if (this.state.kuantitas > helpers2.stock) {
             Swal.fire(`Kuantitas melebihi stok`)
             return
         } else if (this.state.kuantitas < 1) {
@@ -71,70 +70,21 @@ class Home extends Component {
             return
         }
 
-        axios.get(`${apiURL}/users/${this.props.auth.id}`)
-            .then((res) => {
-                this.setState({ keranjang: res.data.cart })
-                let keranjangCopy = this.state.keranjang
-                let indexKeranjang = keranjangCopy.findIndex(x => x.nama === helpers2.nama)
-                console.log(indexKeranjang);
-                if (indexKeranjang < 0) {
-
-                    axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
-                        cart: [
-                            ...this.state.keranjang,
-                            {
-                                nama: helpers2.nama,
-                                gambar: helpers2.gambar,
-                                harga: helpers2.harga,
-                                kuantitas: parseInt(this.state.kuantitas),
-                                tipe: helpers2.tipe
-                            }
-                        ]
-                    }).then((res2) => {
-                        console.log(this.state.keranjang)
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Yay!',
-                            text: 'Pilihanmu berhasil ditambahkan',
-                            timer: 1500,
-                            timerProgressBar: true
-                        })
-                        let stokCopy = this.state.products
-                        stokCopy[indexProduk].stok -= this.state.kuantitas
-                        this.setState({ products: stokCopy })
-                        axios.patch(`${apiURL}/products/${helpers2.id}`, {
-                            ...this.state.products[indexProduk]
-                        })
-                    }).catch((err) => {
-                        alert(`error`)
-                    })
-                } else {
-                    keranjangCopy[indexKeranjang].kuantitas += parseInt(this.state.kuantitas)
-                    console.log(keranjangCopy);
-                    axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
-                        cart: [
-                            ...keranjangCopy,
-                        ]
-                    }).then((res2) => {
-                        console.log(this.state.keranjang)
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Yay!',
-                            text: 'Pilihanmu berhasil ditambahkan',
-                            timer: 1500,
-                            timerProgressBar: true
-                        })
-                        let stokCopy = this.state.products
-                        stokCopy[indexProduk].stok -= this.state.kuantitas
-                        this.setState({ products: stokCopy })
-                        axios.patch(`${apiURL}/products/${helpers2.id}`, {
-                            ...this.state.products[indexProduk]
-                        })
-                    }).catch((err) => {
-                        alert(`error`)
-                    })
-                }
+        await axios.post(`${apiURL}/addtocart/${this.props.auth.user_id}`, {
+            product_id: helpers2.product_id,
+            quantity: parseInt(this.state.kuantitas)
+        })
+        try {
+            Swal.fire({
+                icon: 'success',
+                title: 'Yay!',
+                text: 'Pilihanmu berhasil ditambahkan',
+                timer: 1500,
+                timerProgressBar: true
             })
+        } catch (error) {
+            alert("error")
+        }
 
         if (index >= 0) {
             this.setState({ indexProduk: index, modalPopupProdukOpen: !this.state.modalPopupProdukOpen })
@@ -153,13 +103,13 @@ class Home extends Component {
             <Modal centered isOpen={this.state.modalPopupProdukOpen} toggle={this.modalPopupProdukHandler}>
                 <ModalBody className="popup-layout">
                     <div className="popup-sec">
-                        <img className="gambar-popup" src={helpers1 ? "" : helpers2.gambar} alt="" />
+                        <img className="gambar-popup" src={helpers1 ? "" : helpers2.image} alt="" />
                     </div>
                     <div className="popup-sec2">
-                        <h4 style={{ fontWeight: "700" }} > {helpers1 ? "" : helpers2.nama}</h4>
+                        <h4 style={{ fontWeight: "700" }} > {helpers1 ? "" : helpers2.name}</h4>
                         <hr />
-                        <p className="fw-bold" style={{ marginBottom: "0", color: "tomato" }}>{toRupiah(helpers1 ? "" : helpers2.harga)}</p>
-                        <p style={{ marginBottom: "2vh" }}>Stok : {helpers1 ? "" : helpers2.stok} {helpers1 ? "" : helpers2.tipe} </p>
+                        <p className="fw-bold" style={{ marginBottom: "0", color: "tomato" }}>{toRupiah(helpers1 ? "" : helpers2.price)}</p>
+                        <p style={{ marginBottom: "2vh" }}>Stok : {helpers1 ? "" : helpers2.stock} {helpers1 ? "" : helpers2.type} </p>
                         <div className="kuantitas-box">
                             <input className="kuantitas-input" name="kuantitas" type="number" placeholder="Kuantitas" onChange={this.inputKuantitasHandler} />
                         </div>
@@ -176,10 +126,10 @@ class Home extends Component {
             return (
                 <div key={index + 1} className="kartu-box-style">
                     <Card className="kartu-style">
-                        <CardImg src={val.gambar} alt={val.nama} className="gambar-kartu" />
+                        <CardImg src={val.image} alt={val.name} className="gambar-kartu" />
                         <CardBody>
-                            <CardTitle tag="h5">{val.nama}</CardTitle>
-                            <CardSubtitle tag="h6" className="teks-harga mb-3">{toRupiah(val.harga)}/{val.tipe}</CardSubtitle>
+                            <CardTitle tag="h5">{val.name}</CardTitle>
+                            <CardSubtitle tag="h6" className="teks-harga mb-3">{toRupiah(val.price)}/{val.type}</CardSubtitle>
                             <button className="cart-button-style" onClick={() => this.modalPopupProdukHandler(index)} >+ Tambahkan ke Keranjang</button>
                         </CardBody>
                     </Card>

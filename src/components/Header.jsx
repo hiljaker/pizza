@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const onLogout = () => {
-    localStorage.removeItem("id")
+    localStorage.removeItem("token")
     LogoutAction()
     window.location.reload(false);
 }
@@ -66,10 +66,10 @@ const BasicHeader = (props) => {
                     {props.auth.isLogin ? (
                         <div className="top-sec2">
                             <Link to="/history">
-                                <FaHistory fontSize={25} color="white" style={{ marginRight: "2vw" }} />
+                                <FaHistory fontSize={25} color="white" style={{ marginRight: "2vw" }} className="icon-size" />
                             </Link>
                             <Link to="/cart">
-                                <FaShoppingCart fontSize={25} color="white" style={{ marginRight: "2vw" }} />
+                                <FaShoppingCart fontSize={25} color="white" style={{ marginRight: "2vw" }} className="icon-size" />
                             </Link>
                             <Dropdown isOpen={dropdownOpen} toggle={toggle}>
                                 <DropdownToggle className="bg-white text-dark border-white">

@@ -16,26 +16,19 @@ class Cart extends Component {
     }
 
     // Get Data Keranjang
-    componentDidMount() {
-        axios.get(`${apiURL}/users/${this.props.auth.id}`)
-            .then((res) => {
-                this.setState({ keranjang: res.data.cart })
-                console.log(this.state.keranjang);
-                axios.get(`${apiURL}/products`)
-                    .then((res2) => {
-                        this.setState({ products: res2.data })
-                        console.log(this.state.products);
-                    }).catch((err2) => {
-                        alert(`error`)
-                    })
-            }).catch((err) => {
-                alert(`error`)
-            })
+    async componentDidMount() {
+        let res = await axios.get(`${apiURL}/getcart/${this.props.auth.user_id}`)
+        try {
+            this.setState({ keranjang: res.data })
+        } catch (error) {
+            alert("error")
+        }
     }
 
     // Hapus Item
     onHapus(index) {
-        let idProduk = this.state.keranjang[index]
+        let idProduk = this.state.keranjang[index].product_id
+        console.log(idProduk);
         Swal.fire({
             icon: "warning",
             title: `Kamu mau hapus ${idProduk.nama}?`,
@@ -45,31 +38,12 @@ class Cart extends Component {
             denyButtonText: `Tidak`,
         }).then((result) => {
             if (result.isConfirmed) {
-                let keranjangCopy = this.state.keranjang
-                keranjangCopy.splice(index, 1)
-                console.log(keranjangCopy);
-                axios.patch(`${apiURL}/users/${this.props.auth.id}`, {
-                    cart: [
-                        ...keranjangCopy
-                    ]
-                }).then((res) => {
-                    axios.get(`${apiURL}/users/${this.props.auth.id}`)
-                        .then((res2) => {
-                            this.setState({ keranjang: res2.data.cart })
-                        }).catch((err2) => {
-                            alert(`server error`)
-                        })
-                    // Batas
-                    let productsCopy = this.state.products
-                    let indexProduk = productsCopy.findIndex(x => x.nama === idProduk.nama)
-                    productsCopy[indexProduk].stok += idProduk.kuantitas
-                    this.setState({ products: productsCopy })
-                    axios.patch(`${apiURL}/products/${productsCopy[indexProduk].id}`, {
-                        ...this.state.products[indexProduk]
+                axios.delete(`${apiURL}/deletefromcart/${idProduk}/${this.props.auth.user_id}`)
+                    .then((res) => {
+                        this.setState({ keranjang: res.data })
+                    }).catch((err) => {
+                        alert(`server error`)
                     })
-                }).catch((err) => {
-                    alert(`server error`)
-                })
                 Swal.fire('Berhasil dihapus!', '', 'success')
             } else if (result.isDenied) {
                 Swal.fire('Batal dihapus', '', 'info')
@@ -83,17 +57,17 @@ class Cart extends Component {
             return (
                 <div className="item-details" key={index + 1}>
                     <div className="detail-sec1">
-                        <img src={val.gambar} alt="" className="item-imgstyle" />
+                        <img src={val.image} alt="" className="item-imgstyle" />
                     </div>
                     <div className="detail-sec2">
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <h2>{val.nama}</h2>
+                            <h2>{val.name}</h2>
                             <button onClick={() => this.onHapus(index)} className="tombolhapus-cart">Hapus</button>
                         </div>
                         <hr />
-                        <p>Harga per {val.tipe} = {toRupiah(val.harga)}</p>
-                        <p>Kuantitas = {val.kuantitas} {val.tipe}</p>
-                        <p style={{ fontWeight: "bold" }}>Total = {toRupiah(val.harga * val.kuantitas)}</p>
+                        <p>Harga per {val.type} = {toRupiah(val.price)}</p>
+                        <p>Kuantitas = {val.quantity} {val.type}</p>
+                        <p style={{ fontWeight: "bold" }}>Total = {toRupiah(val.price * val.quantity)}</p>
                     </div>
                 </div>
             )
@@ -104,7 +78,7 @@ class Cart extends Component {
     grandTotal() {
         let total = 0
         this.state.keranjang.forEach((val) => {
-            total += val.harga * val.kuantitas
+            total += val.price * val.quantity
         })
         return <h4>{toRupiah(total)}</h4>
     }

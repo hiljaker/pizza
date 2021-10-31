@@ -7,7 +7,7 @@ import "./styles/adminHeader.css"
 class AdminHeader extends Component {
 
     onLogout = () => {
-        localStorage.removeItem("id")
+        localStorage.removeItem("token")
         LogoutAction()
         window.location.reload(false);
     }

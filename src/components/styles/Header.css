@@ -30,3 +30,13 @@
     color: #f9773e;
     -webkit-text-stroke: 1px white;
 }
+
+@media only screen and (max-width: 480px) {
+    .judul-header {
+        font-size: 1.5rem;
+    }
+
+    .icon-size {
+        font-size: 1.5rem;
+    }
+}

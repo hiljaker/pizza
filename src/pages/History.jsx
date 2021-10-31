@@ -8,7 +8,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Table } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { toRupiah } from '../helpers/toRupiah';
-import EmptyCart from "../assets/empty-cart.svg";
+import EmptyBox from "../assets/empty-box.svg";
 import { Link } from 'react-router-dom';
 
 class History extends Component {
@@ -147,9 +147,9 @@ class History extends Component {
                 {this.detailModal()}
                 <div className="history-layout">
                     <div className="history-page">
-                        {this.state.history.length == 0 ? (
+                        {this.state.history.length === 0 ? (
                             <div style={{ textAlign: "center", marginTop: 100 }}>
-                                <img src={EmptyCart} alt="" width={"200vw"} />
+                                <img src={EmptyBox} alt="" width={"250vw"} />
                                 <h1 style={{ marginTop: 20 }}>Tidak ada riwayat pembelian</h1>
                                 <p style={{ marginTop: 20 }}>Silahkan <Link to="/" style={{ color: "#f9773e" }}>tambahkan</Link> produk.</p>
                             </div>

@@ -24,13 +24,13 @@ class Checkout extends Component {
     }
 
     // Get Data Keranjang
-    componentDidMount() {
-        axios.get(`${apiURL}/users/${this.props.auth.id}`)
-            .then((res) => {
-                this.setState({ keranjang: res.data.cart })
-            }).catch((err) => {
-                alert(`error`)
-            })
+    async componentDidMount() {
+        let res = await axios.get(`${apiURL}/getcart/${this.props.auth.user_id}`)
+        try {
+            this.setState({ keranjang: res.data })
+        } catch (error) {
+            alert("error")
+        }
     }
 
     // Item details
@@ -39,9 +39,9 @@ class Checkout extends Component {
             return (
                 <tr key={index * 8}>
                     <th scope="row">{index + 1}</th>
-                    <td>{val.nama}</td>
-                    <td>{val.kuantitas} {val.tipe}</td>
-                    <td>{toRupiah(val.harga * val.kuantitas)}</td>
+                    <td>{val.name}</td>
+                    <td>{val.quantity} {val.type}</td>
+                    <td>{toRupiah(val.price * val.quantity)}</td>
                 </tr>
             )
         })
@@ -59,7 +59,7 @@ class Checkout extends Component {
     grandTotal = () => {
         let total = 0
         this.state.keranjang.forEach((val) => {
-            total += val.harga * val.kuantitas
+            total += val.price * val.quantity
         })
         return <h5 style={{ color: "white", margin: "5% 0", textAlign: "center" }}>{toRupiah(total)}</h5>
     }

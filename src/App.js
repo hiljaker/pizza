@@ -17,11 +17,16 @@ class App extends Component {
 
   // Keep Login
   componentDidMount() {
-    let id = localStorage.getItem("id")
-    if (id) {
-      axios.get(`${apiURL}/users/${id}`)
+    let token = localStorage.getItem("token")
+    if (token) {
+      axios.get(`${apiURL}/keeploggedin`, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
         .then((res) => {
-          this.props.LoginAction(res.data)
+          this.props.LoginAction(res.data[0])
+          console.log(this.props.auth);
         }).catch((err) => {
           alert(`server error`)
         })

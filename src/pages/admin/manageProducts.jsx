@@ -35,14 +35,13 @@ class ManageProducts extends Component {
     }
 
     // Get Data from Server
-    componentDidMount = () => {
-        axios.get(`${apiURL}/products`)
-            .then((res) => {
-                console.log(res.data)
-                this.setState({ products: res.data })
-            }).catch((err) => {
-                alert(`server error`)
-            })
+    componentDidMount = async () => {
+        let res = await axios.get(`${apiURL}/products`)
+        try {
+            this.setState({ products: res.data })
+        } catch (error) {
+            alert(`server error`)
+        }
     }
 
     // Render Produk ke Tabel
@@ -51,10 +50,10 @@ class ManageProducts extends Component {
             return (
                 <tr className="text-center" key={index + 1}>
                     <th scope="row">{index + 1}</th>
-                    <td>{val.nama}</td>
-                    <td><img src={val.gambar} alt={val.nama} className="pict-size" /></td>
-                    <td>{val.stok}</td>
-                    <td>{toRupiah(val.harga)} per {val.tipe}</td>
+                    <td>{val.name}</td>
+                    <td><img src={val.image} alt={val.name} className="pict-size" /></td>
+                    <td>{val.stock}</td>
+                    <td>{toRupiah(val.price)} per {val.type}</td>
                     <td><button className="button-edit" onClick={() => this.modalEditHandler(index)}>Edit</button></td>
                     <td><button className="button-hapus" onClick={() => this.onHapus(index)}>Hapus</button></td>
                 </tr>
@@ -84,15 +83,15 @@ class ManageProducts extends Component {
                         <input type="number" name="harga" placeholder="Harga" className="modal-input-style" onChange={this.inputHandler} />
                         <div style={{ textAlign: "center", display: "flex", justifyContent: "space-around", alignItems: "center" }}>
                             <div>
-                                <input type="radio" id="perbuah" name="tipe" value="buah" style={{ marginRight: 5 }} onChange={this.inputHandler} />
+                                <input type="radio" id="perbuah" name="tipe" value={1} style={{ marginRight: 5 }} onChange={this.inputHandler} />
                                 <label htmlFor="perbuah">per buah</label>
                             </div>
                             <div>
-                                <input type="radio" id="perkilo" name="tipe" value="kg" style={{ marginRight: 5 }} onChange={this.inputHandler} />
+                                <input type="radio" id="perkilo" name="tipe" value={3} style={{ marginRight: 5 }} onChange={this.inputHandler} />
                                 <label htmlFor="perbuah">per kilo</label>
                             </div>
                             <div>
-                                <input type="radio" id="pertangkai" name="tipe" value="tangkai" style={{ marginRight: 5 }} onChange={this.inputHandler} />
+                                <input type="radio" id="pertangkai" name="tipe" value={2} style={{ marginRight: 5 }} onChange={this.inputHandler} />
                                 <label htmlFor="perbuah">per tangkai</label>
                             </div>
                         </div>
@@ -113,10 +112,11 @@ class ManageProducts extends Component {
         let addProductsCopy = this.state.addProducts
         addProductsCopy = { ...addProductsCopy, [e.target.name]: e.target.value }
         this.setState({ addProducts: addProductsCopy })
+        console.log(this.state.addProducts);
     }
 
     // Tambah
-    onTambah = () => {
+    onTambah = async () => {
         const { nama, gambar, stok, harga, tipe } = this.state.addProducts
         if (!nama || !gambar || !stok || !harga || !tipe) {
             Swal.fire({
@@ -128,30 +128,27 @@ class ManageProducts extends Component {
             })
             return
         }
-        axios.post(`${apiURL}/products`, {
-            nama: nama,
-            gambar: gambar,
-            stok: parseInt(stok),
-            harga: parseInt(harga),
-            tipe: tipe
-        }).then((res) => {
-            axios.get(`${apiURL}/products`)
-                .then((res2) => {
-                    this.setState({ products: res2.data })
-                }).catch((err2) => {
-                    alert(`server error`)
-                })
-            Swal.fire({
-                icon: 'success',
-                title: 'Yay!',
-                text: 'Berhasil tambah produk',
-                timer: 1500,
-                timerProgressBar: true
-            })
-            this.setState({ modalOpen: false })
-        }).catch((err) => {
-            alert(`server error`)
+        await axios.post(`${apiURL}/addproduct`, {
+            name: nama,
+            image: gambar,
+            stock: parseInt(stok),
+            price: parseInt(harga),
+            type_id: parseInt(tipe)
         })
+        let res = await axios.get(`${apiURL}/products`)
+        try {
+            this.setState({ products: res.data })
+        } catch (error) {
+            alert(`server error`)
+        }
+        Swal.fire({
+            icon: 'success',
+            title: 'Yay!',
+            text: 'Berhasil tambah produk',
+            timer: 1500,
+            timerProgressBar: true
+        })
+        this.setState({ modalOpen: false })
     }
 
     // Hapus
@@ -166,16 +163,15 @@ class ManageProducts extends Component {
             denyButtonText: `Tidak`,
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${apiURL}/products/${idProduk.id}`)
-                    .then((res) => {
+                axios.delete(`${apiURL}/deleteproduct/${idProduk.product_id}`)
+                    .then(() => {
                         axios.get(`${apiURL}/products`)
-                            .then((res2) => {
-                                this.setState({ products: res2.data })
-                            }).catch((err2) => {
-                                alert(`server error`)
+                            .then((res) => {
+                                this.setState({ products: res.data })
+                            }).catch((err) => {
+                                alert("server error")
+                                console.log(err);
                             })
-                    }).catch((err) => {
-                        alert(`server error`)
                     })
                 Swal.fire('Terhapus!', '', 'success')
             } else if (result.isDenied) {
